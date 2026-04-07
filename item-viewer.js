@@ -315,7 +315,7 @@ function render() {
 
   const globalSelectionBox = document.createElement('div');
   globalSelectionBox.className = 'global-selection-box';
-  globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div>';
+  globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div><div class="selection-empty">Click items to add them here</div>';
   const globalSelectionItems = globalSelectionBox.querySelector('.selection-items');
   const globalSelectionEmpty = globalSelectionBox.querySelector('.selection-empty');
   content.parentNode.insertBefore(globalSelectionBox, content);
@@ -423,7 +423,7 @@ function render() {
     selectionBox.innerHTML = '<div class="selection-empty">Click items to add them here</div><div class="selection-items"></div>';
     const selectionItems = selectionBox.querySelector('.selection-items');
     const selectionEmpty = selectionBox.querySelector('.selection-empty');
-    const sectionState = { selectedMap, refreshSelection: null };
+    const sectionState = { id: group.rarity || `section-${sectionStates.length}`, selectedMap, refreshSelection: null };
     sectionStates.push(sectionState);
 
     function refreshSelection() {

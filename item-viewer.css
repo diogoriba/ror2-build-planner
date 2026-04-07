@@ -52,7 +52,7 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 
 .selection-box { grid-row: 2; width: 280px; min-width: 220px; min-height: 120px; padding: 12px; border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; background: rgba(255,255,255,.02); }
 .selection-box.collapsed { display: none; }
-.selection-empty { color: var(--muted); font-size: .9rem; text-align: center; padding: 28px 0; }
+.selection-empty { display: none; color: var(--muted); font-size: .9rem; text-align: center; padding: 28px 0; }
 .selection-items { display: grid; min-height: 45px; grid-template-columns: repeat(5, minmax(45px, 1fr)); gap: 0; align-items: start; }
 .selection-item { position: relative; width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .selection-item img { width: 40px; height: 40px; object-fit: contain; }
