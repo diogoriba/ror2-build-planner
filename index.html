@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoR2 Build Planner</title>
+  <link rel="stylesheet" href="item-viewer.css">
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>RoR2 Build Planner</h1>
+        <span>
+          Click items below to add them to your build.<br/>
+          You can drag items to reorder them in each rarity category.<br/>
+          Use the filters to find the items you need. Tags are a work in progress.<br/>
+        </span>
+      </div>
+    </header>
+    <div id="content"></div>
+  </div>
+
+  <div id="tooltip" class="tooltip" aria-hidden="true"></div>
+  <footer>
+    Inspired by <a href="https://ror2.mmkg.ca/">https://ror2.mmkg.ca/</a><br/>
+    Used json and images from <a href="https://github.com/Glagan/RoR2-Items/tree/master">https://github.com/Glagan/RoR2-Items/tree/master</a><br/>
+    Used data from <a href="https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Developer-Reference/Items-and-Equipments-Data/#items">https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Developer-Reference/Items-and-Equipments-Data/#items</a><br/>
+  </footer>
+  <script src="items-data.js"></script>
+  <script src="item-viewer.js"></script>
+</body>
+</html>
