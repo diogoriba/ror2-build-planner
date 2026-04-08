@@ -579,25 +579,10 @@ function render() {
     group.items.sort((a, b) => a.id - b.id);
     const section = document.createElement('section');
     section.className = 'section';
-    const isCollapsible = /void|corrupted|meal|lunar|equip/i.test(group.rarity);
 
     const header = document.createElement('div');
     header.className = 'section-header';
     header.innerHTML = `<h2>${getCategoryLabel(group.rarity)}</h2>`;
-    if (isCollapsible) {
-      const toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'toggle-button';
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.textContent = '−';
-      toggle.addEventListener('click', () => {
-        const collapsed = section.classList.toggle('collapsed');
-        selectionBox.classList.toggle('collapsed', collapsed);
-        toggle.textContent = collapsed ? '+' : '−';
-        toggle.setAttribute('aria-expanded', String(!collapsed));
-      });
-      header.appendChild(toggle);
-    }
     section.appendChild(header);
 
     const sectionBody = document.createElement('div');
@@ -670,8 +655,8 @@ function render() {
 
     group.items.forEach(item => grid.appendChild(createItemCard(item, addToSelection)));
     section.appendChild(sectionBody);
+    section.appendChild(selectionBox);
     content.appendChild(section);
-    content.appendChild(selectionBox);
   });
 
   restoreSelectionFromHash(window.location.hash.slice(1));
