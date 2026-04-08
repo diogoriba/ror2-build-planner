@@ -370,7 +370,7 @@ const itemsByRarity = [
     "rarity": "LUNAR",
     "items": [
       {
-        "id": -1,
+        "id": "L-1",
         "name": "Hook of Heresy",
         "tags": [
         ],
@@ -378,7 +378,7 @@ const itemsByRarity = [
         "description": "{misc:Replace your Secondary Skill} with {misc:Slicing Maelstrom}.\nCharge up a projectile that deals {offense:875% damage per second} to nearby enemies, exploding after {misc:3} seconds to deal {offense:700% damage} and {offense:root} enemies for {misc:3} {+3} seconds. Recharges after 5 {+5} seconds."
       },
       {
-        "id": 7,
+        "id": "L7",
         "name": "Effigy of Grief",
         "tags": [
           "status",
@@ -387,7 +387,7 @@ const itemsByRarity = [
         "description": "ALL characters are {misc:slowed by 50%} and has their {offense:armor reduced by 20}.\nCan place up to {misc:5}.\nCooldown: {misc:15s}"
       },
       {
-        "id": 9,
+        "id": "L9",
         "name": "Gesture of the Drowned",
         "tags": [
           "cooldown"
@@ -396,7 +396,7 @@ const itemsByRarity = [
         "description": "{misc:Reduce equipment cooldown} by {misc:50%} {+15%}.\nForces your Equipment to {misc:activate} whenever it is off {misc:cooldown}."
       },
       {
-        "id": 31,
+        "id": "L31",
         "name": "Helfire Tincture",
         "tags": [
           "status"
@@ -405,7 +405,7 @@ const itemsByRarity = [
         "description": "{offense:Ignite} ALL characters within 15m. Deal {offense:5% of your maximum health/second as burning} to yourself.\nThe burn is {offense:0.5x} stronger on allies, and {offense:24x} stronger on enemies.\nCooldown: {misc:45s}"
       },
       {
-        "id": 43,
+        "id": "L43",
         "name": "Glowing Meteorite",
         "tags": [
           "aoe",
@@ -415,7 +415,7 @@ const itemsByRarity = [
         "description": "{offense:Rain meteors} from the sky, damaging ALL characters for {offense:600% damage per blast}.\nLast 20 seconds.\nCooldown: {misc:140s}"
       },
       {
-        "id": 57,
+        "id": "L57",
         "name": "Spinel Affliction",
         "tags": [
           "hp%",
@@ -425,7 +425,7 @@ const itemsByRarity = [
         "description": "Drink the Tonic, gaining a boost for 15 seconds.\nIncreases {offense:damage} by {offense:+100%}.\nIncreases {offense:attack speed} by {offense:+70%}.\nIncreases {offense:armor} by {offense:+20}.\nIncreases {defense:maximum health} by {defense:+50%}.\nIncreases {defense:passive health regeneration} by {defense:+300%}.\nIncreases {misc:movespeed} by {misc:+30%}.\nWhen the tonic wears off, you have {debuff:20%} chance to gain a {debuff:Tonic Affliction, reducing all of your stats} by {debuff:-5%} {-5%}.\nCooldown: {misc:60s}"
       },
       {
-        "id": 82,
+        "id": "L82",
         "name": "Focused Convergence",
         "tags": [
         ],
@@ -433,7 +433,7 @@ const itemsByRarity = [
         "description": "Teleporters charge {misc:30%} {+30%} {misc:faster}, but the size of the Teleporter zone is {debuff:50%} {-50%} smaller."
       },
       {
-        "id": 88,
+        "id": "L88",
         "name": "Brittle Crown",
         "tags": [
           "economy"
@@ -442,7 +442,7 @@ const itemsByRarity = [
         "description": "{misc:30% chance on hit} to gain {misc:2} {+2} {misc:gold}. {misc:Scales over time}.\nOn taking damage, {debuff:lose gold} equal to {debuff:100%} {+100%} of the {debuff:maximum health percentage you lost}."
       },
       {
-        "id": 91,
+        "id": "L91",
         "name": "Light Flux Pauldron",
         "tags": [
           "cooldown"
@@ -452,7 +452,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 92,
+        "id": "L92",
         "name": "Stone Flux Pauldron",
         "tags": [
           "defensive",
@@ -463,7 +463,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 123,
+        "id": "L123",
         "name": "Purity",
         "tags": [
           "cooldown",
@@ -473,7 +473,7 @@ const itemsByRarity = [
         "description": "All skill cooldowns are reduced by {misc:2} {+1} seconds. All random effects are rolled {misc:+1} {+1} times for an {debuff:unfavorable outcome}."
       },
       {
-        "id": 124,
+        "id": "L124",
         "name": "Shaped Glass",
         "tags": [
           "raw damage"
@@ -482,7 +482,7 @@ const itemsByRarity = [
         "description": "Increase base damage by {offense:100%} {+100%}.\n{defense:Reduce maximum health by 50%} {+50%}."
       },
       {
-        "id": 125,
+        "id": "L125",
         "name": "Visions of Heresy",
         "tags": [
         ],
@@ -490,7 +490,7 @@ const itemsByRarity = [
         "description": "{misc:Replace your Primary Skill} with {misc:Hungering Gaze}.\nFire a flurry of {misc:tracking shards} that detonate after a delay, dealing {offense:120%} base damage. Hold up to 12 charges {+12} that reload after 2 seconds {+2}."
       },
       {
-        "id": 127,
+        "id": "L127",
         "name": "Essence of Heresy",
         "tags": [
           "aoe",
@@ -500,7 +500,7 @@ const itemsByRarity = [
         "description": "{misc:Replace your Special Skill} with {misc:Ruin}.\nDealing damage adds a stack of {offense:Ruin} for 10 {+10} seconds. Activating the skill {offense:detonates} all Ruin stack at unlimited range, dealing {offense:300% damage} plus {offense:120% damage per stack of Ruin}.\nRecharges after 8 {+8} seconds."
       },
       {
-        "id": 128,
+        "id": "L128",
         "name": "Egocentrism",
         "tags": [
           "aoe",
@@ -511,14 +511,14 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 129,
+        "id": "L129",
         "name": "Beads of Fealty",
         "tags": [],
         "image": "beads",
         "description": "Seems to do nothing... {debuff:but...}"
       },
       {
-        "id": 130,
+        "id": "L130",
         "name": "Strides of Heresy",
         "tags": [
           "movement",
@@ -528,14 +528,14 @@ const itemsByRarity = [
         "description": "{misc:Replace your Utility Skill} with {misc:Shadowfade}.\nFade away, becoming {misc:intangible} and gaining {misc:+30% movement speed}. {defense:Heal} for {defense:25%} {+25%} {defense:of your maximum health}. Lasts 3 {+3} seconds."
       },
       {
-        "id": 144,
+        "id": "L144",
         "name": "Defiant Gouge",
         "tags": [],
         "image": "tools",
         "description": "Using a Shrine summons {debuff:enemies} nearby. {misc:Scales over time}."
       },
       {
-        "id": 152,
+        "id": "L152",
         "name": "Longstanding Solitude",
         "tags": [
           "economy"
@@ -545,7 +545,7 @@ const itemsByRarity = [
         "expansion": "Seekers of the Storm"
       },
       {
-        "id": 167,
+        "id": "L167",
         "name": "Mercurial Rachis",
         "tags": [
           "raw damage"
@@ -554,7 +554,7 @@ const itemsByRarity = [
         "description": "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within {misc:16m} {+50%}, causing them to deal {offense:+50%} damage."
       },
       {
-        "id": 169,
+        "id": "L169",
         "name": "Eulogy Zero",
         "tags": [
         ],
@@ -563,7 +563,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 172,
+        "id": "L172",
         "name": "Corpsebloom",
         "tags": [
           "defensive"
@@ -572,7 +572,7 @@ const itemsByRarity = [
         "description": "{defense:Heal +100%} {+100%} more.\n{defense:All healing is applied over time}.\nCan {defense:heal} for a {defense:maximum} of {defense:10%} {-50%} of your {defense:health per second}."
       },
       {
-        "id": 185,
+        "id": "L185",
         "name": "Transcendence",
         "tags": [
           "defensive",
@@ -582,7 +582,7 @@ const itemsByRarity = [
         "description": "{defense:Convert} all but {defense:1 health} into {defense:regenerating shields}.\n{defense:Gain 50%} {+25%} {defense:maximum health}."
       },
       {
-        "id": 218,
+        "id": "L218",
         "name": "Neutronium Weight",
         "tags": [
           "status"
@@ -812,7 +812,7 @@ const itemsByRarity = [
         "description": "Gain a Woodsprite follower that heals a friendly target for {defense:10% of their maximum health} instantly, then {defense:1.5% of your maximum health} every second.\nActivating the equipment assigns a new target, or yourself if there are no targets available.\nCooldown: {misc:15s}"
       },
       {
-        "id": 51,
+        "id": "E51",
         "name": "Recycler",
         "tags": [
           "economy"
@@ -821,7 +821,7 @@ const itemsByRarity = [
         "description": "{misc:Transform} an Item or Equipment into a different one. {misc:Can only be converted in the same tier one time}.\nCooldown: {misc:45s}"
       },
       {
-        "id": 52,
+        "id": "E52",
         "name": "Sawmerang",
         "tags": [
           "aoe",
@@ -831,7 +831,7 @@ const itemsByRarity = [
         "description": "Throw {offense:three large saw blades} that slice through enemies for {offense:3x400%} damage.\nAlso deals an additional {offense:3x100% damage per second} while {offense:bleeding} enemies.\nCan {offense:strike} enemies again on the way back.\nCooldown: {misc:45s}"
       },
       {
-        "id": 53,
+        "id": "E53",
         "name": "Radar Scanner",
         "tags": [
           "economy"
@@ -840,7 +840,7 @@ const itemsByRarity = [
         "description": "{misc:Reveal} all interactables within 500m for {misc:10 seconds}.\nCooldown: {misc:45s}"
       },
       {
-        "id": 56,
+        "id": "E56",
         "name": "Gorag's Opus",
         "tags": [
           "raw damage",
@@ -850,7 +850,7 @@ const itemsByRarity = [
         "description": "All allies enter a {offense:frenzy} for {misc:7} seconds. Increases {misc:movement speed} by {misc:50%} and {offense:attack speed} by {offense:100%}.\nCooldown: {misc:45s}"
       },
       {
-        "id": 58,
+        "id": "E58",
         "name": "Remote Caffeinator",
         "tags": [
           "defensive",
@@ -1411,7 +1411,7 @@ const itemsByRarity = [
         "description": "Fire a {offense:tracking wisp} for {offense:300%} {+300%} {offense:damage}.\nFires every {misc:1.6} seconds while sprinting. Fire rate increases with {misc:movement speed}."
       },
       {
-        "id": "E215",
+        "id": 215,
         "name": "Halcyon Seed",
         "tags": [
           "summon"
