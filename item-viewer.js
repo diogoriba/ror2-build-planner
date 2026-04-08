@@ -422,8 +422,8 @@ function render() {
 
   function shouldDimItem(item) {
     const matchTags = matchesTags(item) && selectedTags.size > 0;
-    const matchSearch = matchesSearch(item);
-    return !matchSearch && !matchTags;
+    const matchSearch = matchesSearch(item) && searchQuery;
+    return (selectedTags.size > 0 || searchQuery) && !(matchTags || matchSearch);
   }
 
   function updateTagOptionLabels() {
