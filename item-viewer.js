@@ -83,9 +83,10 @@ function getCategoryRank(name) {
   if (key.includes('legendary')) return 3;
   if (key.includes('unique')) return 4;
   if (key.includes('void') || key.includes('corrupted')) return 5;
-  if (key.includes('meal')) return 6;
-  if (key.includes('lunar')) return 7;
-  if (key.includes('equip')) return 8;
+  if (key.includes('lunar')) return 6;
+  if (key.includes('equip')) return 7;
+  if (key.includes('meal')) return 8;
+
   return 99;
 }
 
