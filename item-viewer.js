@@ -186,11 +186,8 @@ function render() {
 
   // Available tags for filtering
   const availableTags = [
-    'utility', 'offense', 'defense', 'heal', 'damage', 'buff', 'debuff',
-    'armor', 'shield', 'gold', 'stack', 'level', 'explosion',
-    'on hit', 'on kill', 'trigger', 'equipment', 'hit',
-    'speed', 'attack', 'berzerk', 'barrier',
-    'flat', 'accumulate'
+    'defensive', 'crit', 'proc', 'status', 'summon', 'economy', 'aoe',
+    'on kill', 'raw damage', 'movement', 'cooldown', 'hp%', 'execute',
   ].sort();
 
   function getSelectionKey(item) {
