@@ -381,7 +381,7 @@ const itemsByRarity = [
         "id": "L7",
         "name": "Effigy of Grief",
         "tags": [
-          "status",
+          "status"
         ],
         "image": "slow",
         "description": "ALL characters are {misc:slowed by 50%} and has their {offense:armor reduced by 20}.\nCan place up to {misc:5}.\nCooldown: {misc:15s}"
@@ -1745,7 +1745,7 @@ const itemsByRarity = [
         "id": 191,
         "name": "Chronobauble",
         "tags": [
-          "status",
+          "status"
         ],
         "image": "bauble",
         "description": "{misc:Slow} enemies for {misc:-60% movement speed} for {misc:2s} {+2s}."
@@ -1822,7 +1822,7 @@ const itemsByRarity = [
         "id": 214,
         "name": "Razorwire",
         "tags": [
-          "proc",
+          "proc"
         ],
         "image": "razorHeadband",
         "description": "Getting hit causes you to explode in a burst of razors, dealing {offense:160% damage}.\nHits up to {offense:5} {+2} targets in a {offense:25m} {+10m} radius."
@@ -1831,7 +1831,7 @@ const itemsByRarity = [
         "id": 221,
         "name": "Noxious Thorn",
         "tags": [
-          "status",
+          "status"
         ],
         "image": "noxiousThorn",
         "description": "Gain {offense:10%} chance to {offense:bleed} an enemy. On killing an enemy, {offense:transfer 33%} of every debuff stack to {offense:1 enemy} {+1} within {misc:20m} {+5m}.",
@@ -2244,3 +2244,9 @@ const itemsByRarity = [
     ]
   }
 ];
+
+if (typeof window === 'undefined') {
+  exports.itemsByRarity = itemsByRarity;
+} else {
+  window.itemsByRarity = itemsByRarity;
+}
