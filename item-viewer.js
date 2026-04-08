@@ -100,6 +100,8 @@ function render() {
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'item-card';
+    card.dataset.itemKey = getSelectionKey(item);
+    card.dataset.expansion = item.expansion || '';
     const badgeIcon = expansionIconMap[item.expansion];
     const badgeHtml = badgeIcon ? `
       <span class="item-card-badge" title="${escapeHtml(item.expansion)}">
@@ -190,8 +192,21 @@ function render() {
     'on kill', 'raw damage', 'movement', 'cooldown', 'electric', 'hp%', 'execute',
   ].sort();
 
+  const availableExpansions = Array.from(
+    new Set(itemsByRarity.flatMap(group =>
+      group.items.map(item => item.expansion || '')
+    ))
+  )
+    .filter(expansion => expansion)
+    .sort();
+  const visibleExpansions = new Set(availableExpansions);
+  const itemByKey = new Map(itemsByRarity.flatMap(group =>
+    group.items.map(item => [getSelectionKey(item), item])
+  ));
+  const itemKeyToSectionState = new Map();
+
   function getSelectionKey(item) {
-    return `${item.id}|${item.image}|${item.name}`;
+    return `${item.id}`;
   }
 
   function insertGlobalEntry(sectionState, key) {
@@ -303,6 +318,7 @@ function render() {
       globalSelectionItems.appendChild(tile);
     });
     globalSelectionEmpty.style.display = hasAny ? 'none' : 'block';
+    refreshUrlHash();
   }
 
   function refreshAllSelections() {
@@ -340,6 +356,16 @@ function render() {
           </div>
         </div>
       </div>
+      <button type="button" class="clear-selection-button">Clear selection</button>
+    </div>
+    <div class="expansion-filters">
+      <span class="expansion-label">Show expansions:</span>
+      ${availableExpansions.map(expansion => `
+        <label class="expansion-option">
+          <input type="checkbox" value="${escapeHtml(expansion)}" checked />
+          <span>${escapeHtml(expansion)}</span>
+        </label>
+      `).join('')}
     </div>
   `;
   content.parentNode.insertBefore(searchSection, content);
@@ -350,6 +376,8 @@ function render() {
   const tagDropdownButton = searchSection.querySelector('.tag-dropdown-button');
   const tagDropdownMenu = searchSection.querySelector('.tag-dropdown-menu');
   const tagDropdownItems = Array.from(searchSection.querySelectorAll('.tag-dropdown-item'));
+  const expansionCheckboxes = Array.from(searchSection.querySelectorAll('.expansion-option input'));
+  const clearSelectionButton = searchSection.querySelector('.clear-selection-button');
 
   // Search and filter functions
   function matchesSearch(item) {
@@ -362,8 +390,13 @@ function render() {
     return item.tags && item.tags.some(tag => selectedTags.has(tag));
   }
 
+  function matchesExpansion(item) {
+    const expansion = item.expansion || '';
+    return expansion === '' || visibleExpansions.has(expansion);
+  }
+
   function shouldShowItem(item) {
-    return matchesSearch(item) && matchesTags(item);
+    return matchesSearch(item) && matchesTags(item) && matchesExpansion(item);
   }
 
   function updateTagOptionLabels() {
@@ -387,10 +420,83 @@ function render() {
     }
   }
 
+  function base64Encode(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 1) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function base64Decode(encoded) {
+    const binary = atob(encoded);
+    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  function serializeSelection() {
+    const entries = globalSelectionOrder.map(entry => {
+      const selection = entry.sectionState.selectedMap.get(entry.key);
+      if (!selection) return null;
+      return `${entry.key}:${selection.count}`;
+    }).filter(Boolean);
+    return entries.length ? base64Encode(entries.join(',')) : '';
+  }
+
+  function setUrlHash(hashValue) {
+    const newHash = hashValue ? `#${hashValue}` : '';
+    const nextUrl = `${window.location.pathname}${window.location.search}${newHash}`;
+    if (window.location.href !== nextUrl) {
+      history.replaceState(null, '', nextUrl);
+    }
+  }
+
+  function refreshUrlHash() {
+    setUrlHash(serializeSelection());
+  }
+
   function updateFilters() {
     searchQuery = searchInput.value.trim();
     applyFilters();
     updateTagOptionLabels();
+  }
+
+  function clearEntireSelection() {
+    if (!globalSelectionOrder.length) return;
+    if (!window.confirm('Clear the entire selection? This will also clear tag filters.')) return;
+    selectedTags.clear();
+    updateFilters();
+    sectionStates.forEach(state => state.selectedMap.clear());
+    globalSelectionOrder.length = 0;
+    refreshAllSelections();
+  }
+
+  function restoreSelectionFromHash(hash) {
+    if (!hash) return;
+    let decoded;
+    try {
+      decoded = base64Decode(hash);
+    } catch {
+      return;
+    }
+    const entries = decoded.split(',');
+    const seenIds = new Set();
+    entries.forEach(entry => {
+      const separatorIndex = entry.lastIndexOf(':');
+      if (separatorIndex === -1) return;
+      const id = entry.slice(0, separatorIndex);
+      const countValue = entry.slice(separatorIndex + 1);
+      const count = Number(countValue);
+      if (!id || !Number.isInteger(count) || count <= 0 || seenIds.has(id)) return;
+      const item = itemByKey.get(id);
+      const sectionState = itemKeyToSectionState.get(id);
+      if (!item || !sectionState) return;
+      const key = id;
+      sectionState.selectedMap.set(key, { item, count });
+      globalSelectionOrder.push({ sectionState, key });
+      seenIds.add(id);
+    });
   }
 
   tagDropdownButton.addEventListener('click', () => {
@@ -416,6 +522,19 @@ function render() {
     });
   });
 
+  expansionCheckboxes.forEach(input => {
+    input.addEventListener('change', () => {
+      if (input.checked) {
+        visibleExpansions.add(input.value);
+      } else {
+        visibleExpansions.delete(input.value);
+      }
+      updateFilters();
+    });
+  });
+
+  clearSelectionButton.addEventListener('click', clearEntireSelection);
+
   document.addEventListener('click', event => {
     if (!tagDropdown.contains(event.target)) {
       tagDropdownMenu.classList.remove('open');
@@ -425,17 +544,10 @@ function render() {
   function applyFilters() {
     const allItemCards = document.querySelectorAll('.item-card');
     allItemCards.forEach(card => {
-      const itemName = card.querySelector('img').alt;
-      // Find the item data
-      let itemData = null;
-      for (const group of itemsByRarity) {
-        itemData = group.items.find(item => item.name === itemName);
-        if (itemData) break;
-      }
+      const itemData = itemByKey.get(card.dataset.itemKey);
       if (itemData) {
         const shouldShow = shouldShowItem(itemData);
-        card.style.opacity = shouldShow ? '1' : '0.3';
-        card.style.pointerEvents = 'auto';
+        card.style.display = shouldShow ? '' : 'none';
       }
     });
   }
@@ -481,6 +593,7 @@ function render() {
     const selectionEmpty = selectionBox.querySelector('.selection-empty');
     const sectionState = { id: group.rarity || `section-${sectionStates.length}`, selectedMap, refreshSelection: null };
     sectionStates.push(sectionState);
+    group.items.forEach(item => itemKeyToSectionState.set(getSelectionKey(item), sectionState));
 
     function refreshSelection() {
       selectionItems.innerHTML = '';
@@ -536,6 +649,12 @@ function render() {
     content.appendChild(section);
     content.appendChild(selectionBox);
   });
+
+  restoreSelectionFromHash(window.location.hash.slice(1));
+  if (globalSelectionOrder.length) {
+    refreshAllSelections();
+  }
+  updateFilters();
 }
 
 // Initialize the app

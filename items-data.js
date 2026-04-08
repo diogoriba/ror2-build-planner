@@ -597,7 +597,7 @@ const itemsByRarity = [
     "rarity": "EQUIPMENT",
     "items": [
       {
-        "id": 0,
+        "id": "E0",
         "name": "Preon Accumulator",
         "tags": [
           "aoe",
@@ -607,7 +607,7 @@ const itemsByRarity = [
         "description": "Fires preon tendrils, zapping enemies within 35m up to {offense:600% damage/second}.\nOn contact, detonate in an enormous 20m explosion for {offense:4000% damage}.\nCooldown: {misc:140s}"
       },
       {
-        "id": 1,
+        "id": "E1",
         "name": "Primordial Cube",
         "tags": [
           "aoe"
@@ -616,7 +616,7 @@ const itemsByRarity = [
         "description": "Fire a black hole that {misc:draws enemies within 30m into it's center}. Last 10 seconds.\nCooldown: {misc:60s}"
       },
       {
-        "id": 2,
+        "id": "E2",
         "name": "Trophy Hunter's Tricorn",
         "tags": [
           "execute"
@@ -626,7 +626,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 5,
+        "id": "E5",
         "name": "Blast Shower",
         "tags": [
           "defensive"
@@ -635,7 +635,7 @@ const itemsByRarity = [
         "description": "{misc:Cleanse} all negative effects. Includes debuffs, damage over time, and nearby projectiles.\nCooldown: {misc:20s}"
       },
       {
-        "id": 6,
+        "id": "E6",
         "name": "Disposable Missile Launcher",
         "tags": [
           "aoe",
@@ -645,7 +645,7 @@ const itemsByRarity = [
         "description": "Fire a swarm of {offense:12} missiles that deal {offense:12x300%} damage.\nCooldown: {misc:45s}"
       },
       {
-        "id": 8,
+        "id": "E8",
         "name": "Ocular HUD",
         "tags": [
           "crit"
@@ -654,7 +654,7 @@ const itemsByRarity = [
         "description": "Gain {offense:+100% Critical Strike Chance} for 8 seconds.\nCooldown: {misc:60s}"
       },
       {
-        "id": 9,
+        "id": "E9",
         "name": "Forgive Me Please",
         "tags": [
           "on kill"
@@ -663,7 +663,7 @@ const itemsByRarity = [
         "description": "Throw a cursed doll out that {offense:triggers} any {offense:On-kill} effects you have every {misc:1} second for {misc:8} seconds.\nCooldown: {misc:45s}"
       },
       {
-        "id": 10,
+        "id": "E10",
         "name": "The Back-up",
         "tags": [
           "summon"
@@ -672,7 +672,7 @@ const itemsByRarity = [
         "description": "Call {offense:4 Strike Drones} to fight for you.\nLast 25 seconds.\nCooldown: {misc:100s}"
       },
       {
-        "id": 27,
+        "id": "E27",
         "name": "Volcania Egg",
         "tags": [
           "aoe",
@@ -682,7 +682,7 @@ const itemsByRarity = [
         "description": "Turn into a {offense:draconic fireball} for {offense:5} seconds. Deal {offense:500% damage} on impact.\nDetonates at the end for {offense:800% damage}.\nCooldown: {misc:30s}"
       },
       {
-        "id": 28,
+        "id": "E28",
         "name": "Foreign Fruit",
         "tags": [
           "defensive",
@@ -692,7 +692,7 @@ const itemsByRarity = [
         "description": "Instantly heal for {defense:50% of your maximum health}.\nCooldown: {misc:45s}"
       },
       {
-        "id": 29,
+        "id": "E29",
         "name": "Jade Elephant",
         "tags": [
           "defensive"
@@ -701,7 +701,7 @@ const itemsByRarity = [
         "description": "Gain {offense:500 armor} for {misc:5 seconds}.\nCooldown: {misc:45s}"
       },
       {
-        "id": 30,
+        "id": "E30",
         "name": "Eccentric Vase",
         "tags": [
           "movement"
@@ -710,7 +710,7 @@ const itemsByRarity = [
         "description": "Create a {misc:quantum tunnel} of up to {misc:1000m} in length. Lasts 30 seconds.\nCooldown: {misc:45s}"
       },
       {
-        "id": 32,
+        "id": "E32",
         "name": "The Crowdfunder",
         "tags": [
           "raw damage",
@@ -721,7 +721,7 @@ const itemsByRarity = [
         "description": "Fires a continuous barrage that deals {offense:100% damage per bullet}.\nCosts $1 per bullet. Costs increases over time.\nCooldown: {misc:5s}"
       },
       {
-        "id": 34,
+        "id": "E34",
         "name": "Goobo Jr.",
         "tags": [
           "summon"
@@ -731,7 +731,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 35,
+        "id": "E35",
         "name": "Seed of Life",
         "tags": [
           "defensive"
@@ -741,7 +741,7 @@ const itemsByRarity = [
         "expansion": "Seekers of the Storm"
       },
       {
-        "id": 38,
+        "id": "E38",
         "name": "Milky Chrisalis",
         "tags": [
           "movement"
@@ -750,7 +750,7 @@ const itemsByRarity = [
         "description": "Sprout wings and {misc:fly for 15 seconds}.\nGain {misc:+20% movement speed} for the duration.\nCooldown: {misc:60s}"
       },
       {
-        "id": 39,
+        "id": "E39",
         "name": "Super Massive Leech",
         "tags": [
           "defensive"
@@ -759,7 +759,7 @@ const itemsByRarity = [
         "description": "{defense:Heal} for {defense:20%} of the {offense:damage} you deal. Lasts {defense:8} seconds.\nCooldown: {misc:60s}"
       },
       {
-        "id": 40,
+        "id": "E40",
         "name": "Royal Capacitor",
         "tags": [
           "aoe",
@@ -770,7 +770,7 @@ const itemsByRarity = [
         "description": "Call down a lightning strike on a targeted monster, dealing {offense:3000% damage} and {offense:stunning} nearby monsters.\nCooldown: {misc:20s}"
       },
       {
-        "id": 44,
+        "id": "E44",
         "name": "Molotov (6-Pack)",
         "tags": [
           "aoe",
@@ -781,7 +781,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 45,
+        "id": "E45",
         "name": "Executive Card",
         "tags": [
           "economy"
@@ -791,7 +791,7 @@ const itemsByRarity = [
         "expansion": "Survivors of the Void"
       },
       {
-        "id": 48,
+        "id": "E48",
         "name": "Deus Ex Machina",
         "tags": [
           "defensive",
@@ -802,7 +802,7 @@ const itemsByRarity = [
         "expansion": "Alloyed Collective"
       },
       {
-        "id": 49,
+        "id": "E49",
         "name": "Gnarled Woodsprite",
         "tags": [
           "defensive",
@@ -1411,7 +1411,7 @@ const itemsByRarity = [
         "description": "Fire a {offense:tracking wisp} for {offense:300%} {+300%} {offense:damage}.\nFires every {misc:1.6} seconds while sprinting. Fire rate increases with {misc:movement speed}."
       },
       {
-        "id": 215,
+        "id": "E215",
         "name": "Halcyon Seed",
         "tags": [
           "summon"
