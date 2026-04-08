@@ -1,6 +1,6 @@
 const itemsByRarity = [
   {
-    "rarity": "RARE ITEMS",
+    "rarity": "LEGENDARY",
     "items": [
       {
         "id": 2,
@@ -256,7 +256,8 @@ const itemsByRarity = [
         "tags": [
           "defensive",
           "raw damage",
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "opinion",
         "description": "Store {defense:100%} {+100%} of healing as {defense:Soul Energy}.\nAfter your {defense:Soul Energy} reaches {defense:10%} of your {defense:maximum health}, {offense:fire a skull} that deals {offense:250%} of your {defense:Soul Energy} as {offense:damage}."
@@ -316,7 +317,8 @@ const itemsByRarity = [
         "name": "Unstable Tesla Coil",
         "tags": [
           "aoe",
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "tesla",
         "description": "Fire out {offense:lightning} that hits {offense:3} {+2} enemies for {offense:200%} base damage every {offense:0.5s}.\nThe Tesla Coil switches off every {offense:10 seconds}."
@@ -326,7 +328,8 @@ const itemsByRarity = [
         "name": "Electric Boomerang",
         "tags": [
           "proc",
-          "status"
+          "status",
+          "electric"
         ],
         "image": "electricBoomerang",
         "description": "{offense:15%} chance on hit to fire an electric boomerang that slices through enemies dealing {offense:120% base damage} and deals an additional {offense:120%} {+120%} {offense:base damage per second} and {offense:stuns} all enemies hit.\nCan {offense:strike} enemies on the way back.",
@@ -349,11 +352,22 @@ const itemsByRarity = [
         ],
         "image": "burner",
         "description": "Add {misc:+2} {+2} charges of your {misc:Utility skill}.\n{misc:Reduces Utility skill cooldown} by {misc:33%}."
+      },
+      {
+        "id": 231,
+        "name": "Orphaned Core",
+        "tags": [
+          "summon",
+          "proc"
+        ],
+        "image": "core",
+        "description": "Gain a friendly {offense:Solus unit} that launches itself at enemies for {offense:400%} damage, plus an additional {offense:400%} per stack. It inherits your {misc:movement-related items} and can be petted to cleanse negative and cooldown effects. Recharges after {misc:15s}.",
+        "expansion": "Alloyed Collective"
       }
     ]
   },
   {
-    "rarity": "LUNAR ITEMS",
+    "rarity": "LUNAR",
     "items": [
       {
         "id": -1,
@@ -580,13 +594,14 @@ const itemsByRarity = [
     ]
   },
   {
-    "rarity": "EQUIPMENTS",
+    "rarity": "EQUIPMENT",
     "items": [
       {
         "id": 0,
         "name": "Preon Accumulator",
         "tags": [
-          "aoe"
+          "aoe",
+          "electric"
         ],
         "image": "beam",
         "description": "Fires preon tendrils, zapping enemies within 35m up to {offense:600% damage/second}.\nOn contact, detonate in an enormous 20m explosion for {offense:4000% damage}.\nCooldown: {misc:140s}"
@@ -748,7 +763,8 @@ const itemsByRarity = [
         "name": "Royal Capacitor",
         "tags": [
           "aoe",
-          "status"
+          "status",
+          "electric"
         ],
         "image": "lightning",
         "description": "Call down a lightning strike on a targeted monster, dealing {offense:3000% damage} and {offense:stunning} nearby monsters.\nCooldown: {misc:20s}"
@@ -847,7 +863,7 @@ const itemsByRarity = [
     ]
   },
   {
-    "rarity": "COMMON ITEMS",
+    "rarity": "COMMON",
     "items": [
       {
         "id": 3,
@@ -1197,7 +1213,7 @@ const itemsByRarity = [
     ]
   },
   {
-    "rarity": "UNIQUE ITEMS",
+    "rarity": "UNIQUE",
     "items": [
       {
         "id": 5,
@@ -1250,7 +1266,8 @@ const itemsByRarity = [
         "id": 120,
         "name": "Charged Perforator",
         "tags": [
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "whiteHook",
         "description": "{offense:10%} chance on hit to do down a lightning strike, dealing {offense:500%} {+500%} damage."
@@ -1287,7 +1304,8 @@ const itemsByRarity = [
         "tags": [
           "aoe",
           "defensive",
-          "hp%"
+          "hp%",
+          "electric"
         ],
         "image": "weirdTail",
         "description": "Falling below {debuff:25% health} causes you to explode, dealing {offense:6000% base damage}. Recharges every {misc:30 seconds} {-50%}."
@@ -1363,7 +1381,8 @@ const itemsByRarity = [
         "name": "Faulty Conductor",
         "tags": [
           "raw damage",
-          "aoe"
+          "aoe",
+          "electric"
         ],
         "image": "conductor",
         "description": "Every {misc:15} {-20%} {misc:seconds}, release a wave of electricity that {defense:energizes} nearby allies for {misc:7} seconds.\nEnergized allies gain {offense:+30% attack and movement speed}, and ALWAYS land {offense:critical strikes} with {misc:electric} items and attacks.",
@@ -1385,7 +1404,8 @@ const itemsByRarity = [
         "name": "Little Disciple",
         "tags": [
           "raw damage",
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "sprintingWisp",
         "description": "Fire a {offense:tracking wisp} for {offense:300%} {+300%} {offense:damage}.\nFires every {misc:1.6} seconds while sprinting. Fire rate increases with {misc:movement speed}."
@@ -1398,11 +1418,19 @@ const itemsByRarity = [
         ],
         "image": "goldenSeed",
         "description": "Summon {offense:Aurelionite} during the teleporter event.\nIt has {offense:100%} {+50%} {offense:damage} and {defense:100%} {+100%} {defense:health}."
+      },
+      {
+        "id": 232,
+        "name": "Functional Coupler",
+        "tags": [],
+        "image": "coupler",
+        "description": "Hold {misc:1 additional equipment}. Press interact and equipment together to cycle the held equipment.",
+        "expansion": "Alloyed Collective"
       }
     ]
   },
   {
-    "rarity": "UNCOMMON ITEMS",
+    "rarity": "UNCOMMON",
     "items": [
       {
         "id": 7,
@@ -1437,7 +1465,8 @@ const itemsByRarity = [
         "name": "Ukulele",
         "tags": [
           "proc",
-          "aoe"
+          "aoe",
+          "electric"
         ],
         "image": "ukulele",
         "description": "{offense:25%} chance to fire a {offense:chain lightning} for {offense:80%} TOTAL damage up to {offense:3} {+2} targets within {offense:20m} {+2m}."
@@ -1573,7 +1602,8 @@ const itemsByRarity = [
         "name": "Luminous Shot",
         "tags": [
           "cooldown",
-          "raw damage"
+          "raw damage",
+          "electric"
         ],
         "image": "luminousShot",
         "description": "Activating {misc:secondary skill} stores up to {misc:5 charges} {+1}. Requires {misc:3 charges} for your {misc:Primary skill} to fire lightning stikres, dealing {offense:175% TOTAL damage} {+50%} each.\n{misc:Reduces Secondary skill cooldown by 20%}.",
@@ -1603,6 +1633,7 @@ const itemsByRarity = [
         "tags": [
           "movement",
           "aoe",
+          "electric"
         ],
         "image": "faraday",
         "description": "Moving around builds up {misc:charge}, granting up to {misc:+160% movement speed} and {misc:+200% jump height} at 100%.\nAt 25% charge or higher, jumping triggers an {offense:explosive discharge} for {offense:400%} {+280%} {offense:damage} in a 5m to 32.3m {+7.5m} area.",
@@ -1704,6 +1735,7 @@ const itemsByRarity = [
         "tags": [
           "defensive",
           "status",
+          "electric"
         ],
         "image": "energyShield",
         "description": "Increases armor by {misc:30} {+30} while you have a shield. When shield breaks, release a stunning pulse for {offense:100% damage} plus an amount {offense:equal to 100%} {+10%} {offense:of your max shield}. Grants a shield for {defense:4% of your max health}.",
@@ -1818,7 +1850,7 @@ const itemsByRarity = [
     ]
   },
   {
-    "rarity": "CORRUPTED ITEMS",
+    "rarity": "VOID",
     "items": [
       {
         "id": 16,
@@ -1843,7 +1875,8 @@ const itemsByRarity = [
         "id": 34,
         "name": "Polylute",
         "tags": [
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "corruptedThing",
         "description": "{offense:25%} chance to fire {offense:lightning} for {offense:60%} TOTAL damage up to {offense:3} {+3} times.\n{corrupt:Corrupts all Ukuleles}.",
@@ -1968,7 +2001,7 @@ const itemsByRarity = [
     ]
   },
   {
-    "rarity": "MEAL ITEMS",
+    "rarity": "MEAL",
     "items": [
       {
         "id": 23,
@@ -2187,7 +2220,8 @@ const itemsByRarity = [
         "tags": [
           "summon",
           "status",
-          "proc"
+          "proc",
+          "electric"
         ],
         "image": "worms",
         "description": "On hit, {misc:10% chance} to summon a spectral wyrm that seeks out and damages and ignites enemies for 500% {+500%} {offense:TOTAL damage per second} for {misc:10 seconds.}",

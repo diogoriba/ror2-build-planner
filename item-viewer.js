@@ -65,9 +65,9 @@ function renderRecipeIcons(recipe) {
 
 function getCategoryLabel(name) {
   const key = String(name).trim().toLowerCase();
-  if (key.includes('common')) return 'Common';
   if (key.includes('uncommon')) return 'Uncommon';
-  if (key.includes('rare')) return 'Legendary';
+  if (key.includes('common')) return 'Common';
+  if (key.includes('legendary')) return 'Legendary';
   if (key.includes('unique')) return 'Unique';
   if (key.includes('void') || key.includes('corrupted')) return 'Void';
   if (key.includes('meal')) return 'Meal';
@@ -78,9 +78,9 @@ function getCategoryLabel(name) {
 
 function getCategoryRank(name) {
   const key = String(name).toLowerCase();
-  if (key.includes('common')) return 1;
   if (key.includes('uncommon')) return 2;
-  if (key.includes('rare')) return 3;
+  if (key.includes('common')) return 1;
+  if (key.includes('legendary')) return 3;
   if (key.includes('unique')) return 4;
   if (key.includes('void') || key.includes('corrupted')) return 5;
   if (key.includes('meal')) return 6;
@@ -187,7 +187,7 @@ function render() {
   // Available tags for filtering
   const availableTags = [
     'defensive', 'crit', 'proc', 'status', 'summon', 'economy', 'aoe',
-    'on kill', 'raw damage', 'movement', 'cooldown', 'hp%', 'execute',
+    'on kill', 'raw damage', 'movement', 'cooldown', 'electric', 'hp%', 'execute',
   ].sort();
 
   function getSelectionKey(item) {
@@ -324,10 +324,21 @@ function render() {
     <div class="search-controls">
       <input type="text" class="search-input" placeholder="Search item names..." />
       <div class="tag-filter">
-        <select class="tag-select">
-          <option value="">All tags (clear filters)</option>
-          ${availableTags.map(tag => `<option value="${tag}">${tag}</option>`).join('')}
-        </select>
+        <div class="tag-dropdown">
+          <button type="button" class="tag-dropdown-button">All tags (clear filters)</button>
+          <div class="tag-dropdown-menu" aria-label="Tag filter menu">
+            <div class="tag-dropdown-item" data-value="">
+              <span class="tag-prefix"></span>
+              <span class="tag-label">All tags (clear filters)</span>
+            </div>
+            ${availableTags.map(tag => `
+              <div class="tag-dropdown-item" data-value="${tag}">
+                <span class="tag-prefix"></span>
+                <span class="tag-label">${tag}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
       </div>
     </div>
   `;
@@ -335,7 +346,10 @@ function render() {
 
   // Get search elements
   const searchInput = searchSection.querySelector('.search-input');
-  const tagSelect = searchSection.querySelector('.tag-select');
+  const tagDropdown = searchSection.querySelector('.tag-dropdown');
+  const tagDropdownButton = searchSection.querySelector('.tag-dropdown-button');
+  const tagDropdownMenu = searchSection.querySelector('.tag-dropdown-menu');
+  const tagDropdownItems = Array.from(searchSection.querySelectorAll('.tag-dropdown-item'));
 
   // Search and filter functions
   function matchesSearch(item) {
@@ -352,15 +366,61 @@ function render() {
     return matchesSearch(item) && matchesTags(item);
   }
 
+  function updateTagOptionLabels() {
+    tagDropdownItems.forEach(item => {
+      const value = item.dataset.value;
+      const prefix = item.querySelector('.tag-prefix');
+      if (!value) {
+        prefix.textContent = selectedTags.size === 0 ? '✔' : '';
+      } else {
+        prefix.textContent = selectedTags.has(value) ? '✔' : '';
+      }
+      item.classList.toggle('selected', value ? selectedTags.has(value) : selectedTags.size === 0);
+    });
+
+    if (selectedTags.size === 0) {
+      tagDropdownButton.textContent = 'All tags (clear filters)';
+    } else if (selectedTags.size === 1) {
+      tagDropdownButton.textContent = `✔ ${Array.from(selectedTags)[0]}`;
+    } else {
+      tagDropdownButton.textContent = `✔ ${selectedTags.size} tags`;
+    }
+  }
+
   function updateFilters() {
     searchQuery = searchInput.value.trim();
-    selectedTags.clear();
-    const selectedValue = tagSelect.value;
-    if (selectedValue) {
-      selectedTags.add(selectedValue);
-    }
     applyFilters();
+    updateTagOptionLabels();
   }
+
+  tagDropdownButton.addEventListener('click', () => {
+    tagDropdownMenu.classList.toggle('open');
+  });
+
+  tagDropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const value = item.dataset.value;
+      if (!value) {
+        selectedTags.clear();
+      } else {
+        if (selectedTags.has(value)) {
+          selectedTags.delete(value);
+        } else {
+          selectedTags.add(value);
+        }
+      }
+      updateFilters();
+      if (!value) {
+        tagDropdownMenu.classList.remove('open');
+      }
+    });
+  });
+
+  document.addEventListener('click', event => {
+    if (!tagDropdown.contains(event.target)) {
+      tagDropdownMenu.classList.remove('open');
+    }
+  });
 
   function applyFilters() {
     const allItemCards = document.querySelectorAll('.item-card');
@@ -375,14 +435,13 @@ function render() {
       if (itemData) {
         const shouldShow = shouldShowItem(itemData);
         card.style.opacity = shouldShow ? '1' : '0.3';
-        card.style.pointerEvents = shouldShow ? 'auto' : 'none';
+        card.style.pointerEvents = 'auto';
       }
     });
   }
 
   // Event listeners for search
   searchInput.addEventListener('input', updateFilters);
-  tagSelect.addEventListener('change', updateFilters);
 
   itemsByRarity.forEach(group => {
     group.items.sort((a, b) => a.id - b.id);
