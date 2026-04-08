@@ -197,8 +197,15 @@ function render() {
       group.items.map(item => item.expansion || '')
     ))
   )
-    .filter(expansion => expansion)
-    .sort();
+    .filter(expansion => expansion);
+
+  // Custom sort order: Survivors of the Void, Seekers of the Storm, Alloyed Collective
+  const expansionOrder = ['Survivors of the Void', 'Seekers of the Storm', 'Alloyed Collective'];
+  availableExpansions.sort((a, b) => {
+    const indexA = expansionOrder.indexOf(a);
+    const indexB = expansionOrder.indexOf(b);
+    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+  });
   const visibleExpansions = new Set(availableExpansions);
   const itemByKey = new Map(itemsByRarity.flatMap(group =>
     group.items.map(item => [getSelectionKey(item), item])
@@ -318,6 +325,11 @@ function render() {
       globalSelectionItems.appendChild(tile);
     });
     globalSelectionEmpty.style.display = hasAny ? 'none' : 'block';
+    if (hasAny) {
+      globalSelectionItems.classList.remove('hidden');
+    } else {
+      globalSelectionItems.classList.add('hidden');
+    }
     refreshUrlHash();
   }
 
@@ -331,6 +343,8 @@ function render() {
   globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div><div class="selection-empty">Click items to add them here</div>';
   const globalSelectionItems = globalSelectionBox.querySelector('.selection-items');
   const globalSelectionEmpty = globalSelectionBox.querySelector('.selection-empty');
+  globalSelectionItems.classList.add('hidden');
+  globalSelectionEmpty.style.display = 'block';
   content.parentNode.insertBefore(globalSelectionBox, content);
 
   // Create search section
@@ -360,12 +374,18 @@ function render() {
     </div>
     <div class="expansion-filters">
       <span class="expansion-label">Show expansions:</span>
-      ${availableExpansions.map(expansion => `
+      ${availableExpansions.map(expansion => {
+        const icon = expansionIconMap[expansion];
+        return `
         <label class="expansion-option">
           <input type="checkbox" value="${escapeHtml(expansion)}" checked />
-          <span>${escapeHtml(expansion)}</span>
+          <span>
+            ${icon ? `<img src="public/img/${icon}.webp" alt="${escapeHtml(expansion)}" onerror="this.src='public/img/${icon}.jpg'" />` : ''}
+            ${escapeHtml(expansion)}
+          </span>
         </label>
-      `).join('')}
+        `;
+      }).join('')}
     </div>
   `;
   content.parentNode.insertBefore(searchSection, content);
@@ -591,6 +611,8 @@ function render() {
     selectionBox.innerHTML = '<div class="selection-empty">Click items to add them here</div><div class="selection-items"></div>';
     const selectionItems = selectionBox.querySelector('.selection-items');
     const selectionEmpty = selectionBox.querySelector('.selection-empty');
+    selectionItems.classList.add('hidden');
+    selectionEmpty.style.display = 'block';
     const sectionState = { id: group.rarity || `section-${sectionStates.length}`, selectedMap, refreshSelection: null };
     sectionStates.push(sectionState);
     group.items.forEach(item => itemKeyToSectionState.set(getSelectionKey(item), sectionState));
@@ -599,8 +621,10 @@ function render() {
       selectionItems.innerHTML = '';
       if (selectedMap.size === 0) {
         selectionEmpty.style.display = 'block';
+        selectionItems.classList.add('hidden');
       } else {
         selectionEmpty.style.display = 'none';
+        selectionItems.classList.remove('hidden');
         const orderedKeys = globalSelectionOrder
           .filter(entry => entry.sectionState === sectionState)
           .map(entry => entry.key);
@@ -651,9 +675,7 @@ function render() {
   });
 
   restoreSelectionFromHash(window.location.hash.slice(1));
-  if (globalSelectionOrder.length) {
-    refreshAllSelections();
-  }
+  refreshAllSelections();
   updateFilters();
 }
 
