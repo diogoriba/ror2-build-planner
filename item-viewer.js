@@ -417,7 +417,13 @@ function render() {
   }
 
   function shouldShowItem(item) {
-    return matchesSearch(item) && matchesTags(item) && matchesExpansion(item);
+    return matchesExpansion(item);
+  }
+
+  function shouldDimItem(item) {
+    const matchTags = matchesTags(item) && selectedTags.size > 0;
+    const matchSearch = matchesSearch(item);
+    return !matchSearch && !matchTags;
   }
 
   function updateTagOptionLabels() {
@@ -569,6 +575,8 @@ function render() {
       if (itemData) {
         const shouldShow = shouldShowItem(itemData);
         card.style.display = shouldShow ? '' : 'none';
+        const shouldDim = shouldDimItem(itemData);
+        card.classList.toggle('dim', shouldDim);
       }
     });
   }
