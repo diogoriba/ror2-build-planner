@@ -1664,8 +1664,7 @@ const itemsByRarity = [
         "id": 140,
         "name": "AtG Missile Mk. 1",
         "tags": [
-          "proc",
-          "aoe"
+          "proc"
         ],
         "image": "missile_mk",
         "description": "{offense:10%} chance to fire a missile that deals {offense:300%} {+300%} TOTAL damage."

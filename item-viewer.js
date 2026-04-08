@@ -339,6 +339,9 @@ function render() {
     refreshGlobalSelection();
   }
 
+  const fixedHeader = document.createElement('div');
+  fixedHeader.className = 'fixed-header';
+  content.parentNode.insertBefore(fixedHeader, content);
   const globalSelectionBox = document.createElement('div');
   globalSelectionBox.className = 'global-selection-box';
   globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div><div class="selection-empty">Click items to add them here</div>';
@@ -346,7 +349,7 @@ function render() {
   const globalSelectionEmpty = globalSelectionBox.querySelector('.selection-empty');
   globalSelectionItems.classList.add('hidden');
   globalSelectionEmpty.style.display = 'block';
-  content.parentNode.insertBefore(globalSelectionBox, content);
+  fixedHeader.appendChild(globalSelectionBox);
 
   // Create search section
   const searchSection = document.createElement('div');
@@ -389,7 +392,7 @@ function render() {
       }).join('')}
     </div>
   `;
-  content.parentNode.insertBefore(searchSection, content);
+  fixedHeader.appendChild(searchSection);
 
   // Get search elements
   const searchInput = searchSection.querySelector('.search-input');
