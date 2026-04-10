@@ -3,6 +3,8 @@ window.pipTarget = document.querySelector("div.selection-items");
 window.pipCanvas = null;
 window.pipContext = null;
 window.pipVideo = null;
+window.pipRenderLoop = null;
+
 const pipContainer = document.createElement("div");
 pipContainer.style.textAlign = "right";
 pipContainer.style.position = "fixed";
@@ -41,7 +43,7 @@ async function renderLoop() {
       scale: 1.2
     });
 
-    if (!snapshot || snapshot.width === 0) {
+    if (!snapshot || snapshot.width === 0 || !window.pipCanvas || !window.pipContext) {
       rendering = false;
       return;
     }
@@ -60,12 +62,13 @@ async function renderLoop() {
 
   } catch (e) {
     console.warn("Render error:", e);
+  } finally {
+    rendering = false;
   }
-
-  rendering = false;
 }
 
 function initializePiP() {
+    rendering = false;
     window.pipCanvas  = document.createElement("canvas");
     window.pipContext = window.pipCanvas.getContext("2d");
 
@@ -83,7 +86,19 @@ function initializePiP() {
 
     pipContainer.appendChild(window.pipVideo);
 
-    setInterval(renderLoop, FRAME_TIME);
+    const pipDescription = document.createElement("div");
+    pipDescription.innerHTML = "Resize the window to adjust aspect ratio for the overlay. Firefox will let you resize the overlay better than Chrome.";
+    if (!"pictureInPictureEnabled" in document || !window.pipVideo.requestPictureInPicture) {
+        pipDescription.innerHTML += "<br/><br />Picture-in-Picture not supported in this browser.<br />You can try right-clicking the video above this text and choosing the Picture in Picture option from the menu.";
+    }
+    pipDescription.style.borderRadius = "8px";
+    pipDescription.style.background = "#121212";
+    pipDescription.style.padding = "8px";
+    pipDescription.style.marginTop = "8px";
+    pipDescription.style.fontSize = "0.66em";
+    pipContainer.appendChild(pipDescription);
+
+    window.pipRenderLoop = setInterval(renderLoop, FRAME_TIME);
 }
 
 
@@ -94,6 +109,24 @@ pipBtn.onclick = async () => {
     if (!window.pipInitialized) {
         initializePiP();
         window.pipInitialized = true;
+        pipBtn.textContent = "Close Overlay";
+    }
+    else {
+        clearInterval(window.pipRenderLoop);
+        window.pipRenderLoop = null;
+        window.pipVideo.pause();
+        pipContainer.removeChild(window.pipVideo);
+        window.pipVideo.srcObject.getTracks().forEach(track => track.stop());
+        window.pipVideo.srcObject = null;
+        window.pipCanvas = null;
+        window.pipContext = null;
+        window.pipVideo = null;
+        window.pipInitialized = false;
+
+        const pipDescription = pipContainer.querySelector("div");
+        pipContainer.removeChild(pipDescription);
+        pipBtn.textContent = "Overlay";
+        return;
     }
     if (attemptingPiP) {
         return;
@@ -106,7 +139,6 @@ pipBtn.onclick = async () => {
       await window.pipVideo.requestPictureInPicture();
     } else {
       console.warn("PiP API not supported. Use manual PiP via video controls.");
-      alert("PiP not supported in this browser.\nYou can try right-clicking the video on the bottom right corner and choosing the Picture in Picture option.");
     }
   } catch (e) {
     console.error("PiP failed:", e);
