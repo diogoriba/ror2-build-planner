@@ -24,7 +24,6 @@ const itemsByRarity = [
         "id": 11,
         "name": "War Bonds",
         "tags": [
-          "economy",
           "hp%"
         ],
         "image": "warBonds",
@@ -1091,7 +1090,8 @@ const itemsByRarity = [
         "id": 147,
         "name": "Bustling Fungus",
         "tags": [
-          "defensive"
+          "defensive",
+          "hp%"
         ],
         "image": "fungus",
         "description": "After standing still for {defense:1} seconds create a zone that {defense:heals} for {defense:4.5%} {+2.25%} of your {defense:health} every second to all allies within {defense:3m} {+1.5m}."
@@ -1523,7 +1523,8 @@ const itemsByRarity = [
         "name": "Will-O'-the-wisp",
         "tags": [
           "on kill",
-          "aoe"
+          "aoe",
+          "proc"
         ],
         "image": "wisp",
         "description": "On killing an enemy, spawn a {offense:lava pillar} in a {offense:12m} {+2.4m} radius for {offense:350%} {+280%} base damage."
