@@ -6,11 +6,7 @@ window.pipVideo = null;
 window.pipRenderLoop = null;
 
 const pipContainer = document.createElement("div");
-pipContainer.style.textAlign = "right";
-pipContainer.style.position = "fixed";
-pipContainer.style.bottom = "10px";
-pipContainer.style.right = "10px";
-pipContainer.style.width = "350px";
+pipContainer.className = "pip-container";
 
 const pipBtn = document.createElement("button");
 pipBtn.id = "pipBtn";
@@ -20,7 +16,7 @@ pipContainer.appendChild(pipBtn);
 document.body.appendChild(pipContainer);
 
 // -------- SETTINGS --------
-const FPS = 5;
+const FPS = 1;
 const FRAME_TIME = 1000 / FPS;
 
 let rendering = false;
@@ -87,15 +83,7 @@ function initializePiP() {
     pipContainer.appendChild(window.pipVideo);
 
     const pipDescription = document.createElement("div");
-    pipDescription.innerHTML = "Resize the window to adjust aspect ratio for the overlay. Firefox will let you resize the overlay better than Chrome.";
-    if (!"pictureInPictureEnabled" in document || !window.pipVideo.requestPictureInPicture) {
-        pipDescription.innerHTML += "<br/><br />Picture-in-Picture not supported in this browser.<br />You can try right-clicking the video above this text and choosing the Picture in Picture option from the menu.";
-    }
-    pipDescription.style.borderRadius = "8px";
-    pipDescription.style.background = "#121212";
-    pipDescription.style.padding = "8px";
-    pipDescription.style.marginTop = "8px";
-    pipDescription.style.fontSize = "0.66em";
+    pipDescription.innerHTML = "Resize the \"<b><span style=\"color: var(--accent);\">Selected Items</span></b>\" section above to change the aspect ratio.<br />If overlay is not alreay present, right-click the video and select the <b>\"Picture in Picture\"</b> option from the menu.";
     pipContainer.appendChild(pipDescription);
 
     window.pipRenderLoop = setInterval(renderLoop, FRAME_TIME);
@@ -113,6 +101,9 @@ pipBtn.onclick = async () => {
     }
     else {
         clearInterval(window.pipRenderLoop);
+        if ("exitPictureInPicture" in document && document.exitPictureInPicture) {
+          document.exitPictureInPicture();
+        }
         window.pipRenderLoop = null;
         window.pipVideo.pause();
         pipContainer.removeChild(window.pipVideo);
@@ -138,7 +129,7 @@ pipBtn.onclick = async () => {
     if ("pictureInPictureEnabled" in document && window.pipVideo.requestPictureInPicture) {
       await window.pipVideo.requestPictureInPicture();
     } else {
-      console.warn("PiP API not supported. Use manual PiP via video controls.");
+      console.warn("Automatic PiP API not supported. Use manual PiP via video controls.");
     }
   } catch (e) {
     console.error("PiP failed:", e);
