@@ -15,6 +15,12 @@ pipBtn.textContent = "Overlay";
 pipContainer.appendChild(pipBtn);
 document.body.appendChild(pipContainer);
 
+const globalSelectionBox = document.querySelector(".global-selection-box");
+const overlayIndicator = document.createElement("div");
+overlayIndicator.className = "overlay-indicator";
+overlayIndicator.textContent = "↘";
+globalSelectionBox.appendChild(overlayIndicator);
+
 // -------- SETTINGS --------
 const FPS = 1;
 const FRAME_TIME = 1000 / FPS;
@@ -98,6 +104,8 @@ pipBtn.onclick = async () => {
         initializePiP();
         window.pipInitialized = true;
         pipBtn.textContent = "Close Overlay";
+        const globalSelectionBox = document.querySelector(".global-selection-box");
+        globalSelectionBox.classList.add("overlay-active");
     }
     else {
         clearInterval(window.pipRenderLoop);
@@ -117,6 +125,9 @@ pipBtn.onclick = async () => {
         const pipDescription = pipContainer.querySelector("div");
         pipContainer.removeChild(pipDescription);
         pipBtn.textContent = "Overlay";
+
+        const globalSelectionBox = document.querySelector(".global-selection-box");
+        globalSelectionBox.classList.remove("overlay-active");
         return;
     }
     if (attemptingPiP) {

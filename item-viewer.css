@@ -23,6 +23,14 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 #pipBtn { position: relative; top:0px; right: 0px; }
 .section { margin-bottom: 0; width: 280px; display: flex; flex-direction: column; }
 .global-selection-box { width: 50%; padding: 16px; border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; background: rgba(255,255,255,.02); resize: horizontal; overflow: auto; min-width: 250px; max-width: 100%; flex: 0 0 auto; }
+.global-selection-box.overlay-active { border-color: #ff0000ff; position: relative; }
+.global-selection-box div.overlay-indicator { display: none; }
+.global-selection-box.overlay-active div.overlay-indicator { bottom: 6px; right: 10px; position: absolute; display: inline-block; color: #ff0000ff; font-size: 1.5em; font-style: bold; animation-name: overlay-indicator-pulse; animation-duration: 1s; animation-iteration-count: infinite; }
+@keyframes overlay-indicator-pulse {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-10px, -10px);}
+  100% { transform: translate(0, 0);}
+}
 .global-selection-box h2 { margin: 0 0 12px; font-size: 1rem; color: var(--accent); }
 .global-selection-box .selection-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 0; align-items: start; }
 .global-selection-box .selection-items.hidden { display: none; }
