@@ -277,7 +277,8 @@ const itemsByRarity = [
         "tags": [
           "on kill",
           "defensive",
-          "aoe"
+          "aoe",
+          "hp%"
         ],
         "image": "deskPlant",
         "description": "On kill, plant a {defense:healing} fruit seed that grows into a plant after {misc:5} seconds.\nThe plant {defense:heals} for {defense:10%} of {defense:maximum health} every second to all allies withing {defense:5m} {+5m}. Last {misc:10} seconds."
@@ -1053,7 +1054,7 @@ const itemsByRarity = [
           "status"
         ],
         "image": "gasoline",
-        "description": "Killing an enemy {offense:ignites} all enemies within {offense:12m} {+4m} for {offense:150%} base damage.\nAdditionally, ennemies {offense:burn} for {offense:150%} {+75%} base damage."
+        "description": "Killing an enemy {offense:ignites} all enemies within {offense:12m} {+4m} for {offense:150%} base damage.\nAdditionally, enemies {offense:burn} for {offense:150%} {+75%} base damage."
       },
       {
         "id": 104,

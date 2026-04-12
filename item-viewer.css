@@ -24,8 +24,10 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 .section { margin-bottom: 0; width: 280px; display: flex; flex-direction: column; }
 .global-selection-box { width: 50%; padding: 16px; border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; background: rgba(255,255,255,.02); resize: horizontal; overflow: auto; min-width: 250px; max-width: 100%; flex: 0 0 auto; }
 .global-selection-box.overlay-active { border-color: #ff0000ff; position: relative; }
+.global-selection-box .overlay-description { display: none; }
+.global-selection-box.overlay-active .overlay-description { display: block; color: var(--text); font-size: 0.75rem; margin-top: 8px; }
 .global-selection-box div.overlay-indicator { display: none; }
-.global-selection-box.overlay-active div.overlay-indicator { bottom: 6px; right: 10px; position: absolute; display: inline-block; color: #ff0000ff; font-size: 1.5em; font-style: bold; animation-name: overlay-indicator-pulse; animation-duration: 1s; animation-iteration-count: infinite; }
+.global-selection-box.overlay-active div.overlay-indicator { bottom: 6px; right: 10px; position: absolute; display: inline-block; color: #ff0000ff; font-size: 1.5em; font-style: bold; animation-name: overlay-indicator-pulse; animation-duration: 1.5s; animation-iteration-count: infinite; }
 @keyframes overlay-indicator-pulse {
   0% { transform: translate(0, 0); }
   50% { transform: translate(-10px, -10px);}
@@ -98,10 +100,11 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 .dim { filter: brightness(33%); }
 .fixed-header { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 20px; border-radius: 30px; display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 24px; }
 
-.pip-container { position: fixed; bottom: 10px; right: 10px; z-index: 20; border-radius: 16px; background: var(--bg); text-align: right; display: flex; flex-direction: column; max-width: 350px; max-height: 350px; }
+.pip-container { position: fixed; bottom: 10px; right: 10px; z-index: 20; border: 1px dashed rgba(255,255,255,.14); background: var(--bg); text-align: right; display: flex; flex-direction: column; max-width: 20vw; max-height: 20vh; }
+.pip-container.overlay-active { border-color: #ff0000ff;}
 .pip-container button { flex: 0 0 auto; }
 .pip-container video { flex: 1 1 auto; min-height: 0; }
-.pip-container div { flex: 0 0 auto; border-radius: 0px 0px 8px 8px; padding: 8px; font-size: 0.66em; background: var(--bg); }
+.pip-container div { flex: 0 0 auto; padding: 8px; font-size: 0.75em; background: var(--bg); }
 footer { font-size: 0.75em; text-align: center; margin: 3em; color: #ccc;}
 
 @media (max-width: 720px) { .page { padding: 20px 16px 32px; } }

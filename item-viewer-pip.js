@@ -16,6 +16,11 @@ pipContainer.appendChild(pipBtn);
 document.body.appendChild(pipContainer);
 
 const globalSelectionBox = document.querySelector(".global-selection-box");
+const overlayDescription = document.createElement("div");
+overlayDescription.className = "overlay-description";
+overlayDescription.innerHTML = "Resize this section to change overlay's aspect ratio.";
+
+globalSelectionBox.appendChild(overlayDescription);
 const overlayIndicator = document.createElement("div");
 overlayIndicator.className = "overlay-indicator";
 overlayIndicator.textContent = "↘";
@@ -89,7 +94,7 @@ function initializePiP() {
     pipContainer.appendChild(window.pipVideo);
 
     const pipDescription = document.createElement("div");
-    pipDescription.innerHTML = "Resize the \"<b><span style=\"color: var(--accent);\">Selected Items</span></b>\" section above to change the aspect ratio.<br />If overlay is not alreay present, right-click the video and select the <b>\"Picture in Picture\"</b> option from the menu.";
+    pipDescription.innerHTML = "If overlay is not already present, right-click the video above 🔼 and select the <b>\"Picture in Picture\"</b> option from the menu.";
     pipContainer.appendChild(pipDescription);
 
     window.pipRenderLoop = setInterval(renderLoop, FRAME_TIME);
@@ -106,6 +111,7 @@ pipBtn.onclick = async () => {
         pipBtn.textContent = "Close Overlay";
         const globalSelectionBox = document.querySelector(".global-selection-box");
         globalSelectionBox.classList.add("overlay-active");
+        pipContainer.classList.add("overlay-active");
     }
     else {
         clearInterval(window.pipRenderLoop);
@@ -128,6 +134,7 @@ pipBtn.onclick = async () => {
 
         const globalSelectionBox = document.querySelector(".global-selection-box");
         globalSelectionBox.classList.remove("overlay-active");
+        pipContainer.classList.remove("overlay-active");
         return;
     }
     if (attemptingPiP) {
