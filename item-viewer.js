@@ -1,14 +1,15 @@
 const content = document.getElementById('content');
 const tooltip = document.getElementById('tooltip');
 const tapLength = 250; // in milliseconds
-
+const tapDistance = 25; // in pixels
 const expansionIconMap = {
   'Alloyed Collective': 'alloyedCollective',
   'Seekers of the Storm': 'seekersOfTheStorm',
   'Survivors of the Void': 'survivorsOfTheVoid'
 };
 
-const supportsHover = window.matchMedia("(hover: hover)").matches;
+window.supportsHover = window.matchMedia("(hover: hover)").matches;
+
 
 function escapeHtml(value) {
   return String(value)
@@ -118,18 +119,25 @@ function render() {
       ${badgeHtml}
     `;
 
-    if (supportsHover) {
+    if (window.supportsHover) {
       card.onclick = () => onAdd(item);
       card.onpointerenter = event => showTooltip(event, item);
       card.onpointermove = event => moveTooltip(event);
       card.onpointerleave = hideTooltip;
     } else {
-      card.ontouchstart = () => {
+      card.ontouchstart = (e) => {
         card.touchStartTime = Date.now();
+        card.posX = e.touches[0].clientX;
+        card.posY = e.touches[0].clientY;
       }
-      card.ontouchend = () => { 
+      card.ontouchend = (e) => { 
         const timeDiff = Date.now() - card.touchStartTime;
-        if (!draggedKey && timeDiff <= tapLength)
+        const posX = e.changedTouches[0].clientX;
+        const posY = e.changedTouches[0].clientY;
+        const xDiff = posX - card.posX;
+        const yDiff = posY - card.posY;
+        const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        if (!draggedKey && timeDiff <= tapLength && distance < tapDistance)
           showModal(item);
       };
     }
@@ -280,19 +288,17 @@ function render() {
     tile.dataset.selectionKey = key;
     tile.dataset.sectionIndex = String(sectionStates.indexOf(sectionState));
 
-    if (supportsHover) {
+    if (window.supportsHover) {
       tile.onpointerdown = event => {
         if (event.button !== 0) return; // Only left mouse button
         draggedKey = key;
         draggedSection = sectionState;
-        event.dataTransfer.effectAllowed = 'move';
         event.dataTransfer.setData('text/plain', key);
       };
 
       tile.ondragstart = event => {
         draggedKey = key;
         draggedSection = sectionState;
-        event.dataTransfer.effectAllowed = 'move';
         event.dataTransfer.setData('text/plain', key);
         tile.classList.add('dragging');
       };
@@ -376,7 +382,7 @@ function render() {
         <div class="selection-count">${current.count}</div>
       `;
       
-      if (supportsHover) {
+      if (window.supportsHover) {
         tile.onclick = () => {
           current.count -= 1;
           if (current.count <= 0) {
@@ -390,12 +396,19 @@ function render() {
         tile.onpointermove = event => moveTooltip(event);
         tile.onpointerleave = hideTooltip;
       } else {
-        tile.ontouchstart = () => {
+        tile.ontouchstart = (e) => {
           tile.touchStartTime = Date.now();
+          tile.posX = e.touches[0].clientX;
+          tile.posY = e.touches[0].clientY;
         }
-        tile.ontouchend = () => { 
+        tile.ontouchend = (e) => { 
           const timeDiff = Date.now() - tile.touchStartTime;
-          if (!draggedKey && timeDiff < tapLength)
+          const posX = e.changedTouches[0].clientX;
+          const posY = e.changedTouches[0].clientY;
+          const xDiff = posX - tile.posX;
+          const yDiff = posY - tile.posY;
+          const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+          if (!draggedKey && timeDiff <= tapLength && distance < tapDistance)
             showModal(current.item);
         };
       }
@@ -769,7 +782,7 @@ function render() {
             <div class="selection-count">${entry.count}</div>
           `;
 
-          if (supportsHover) {
+          if (window.supportsHover) {
             tile.onclick = () => {
               const current = selectedMap.get(selectionKey);
               if (!current) return;
@@ -785,12 +798,19 @@ function render() {
             tile.onpointermove = event => moveTooltip(event);
             tile.onpointerleave = hideTooltip;
           } else {
-            tile.ontouchstart = () => {
+            tile.ontouchstart = (e) => {
               tile.touchStartTime = Date.now();
+              tile.posX = e.touches[0].clientX;
+              tile.posY = e.touches[0].clientY;
             }
-            tile.ontouchend = () => { 
+            tile.ontouchend = (e) => { 
               const timeDiff = Date.now() - tile.touchStartTime;
-              if (!draggedKey && timeDiff < tapLength)
+              const posX = e.changedTouches[0].clientX;
+              const posY = e.changedTouches[0].clientY;
+              const xDiff = posX - tile.posX;
+              const yDiff = posY - tile.posY;
+              const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+              if (!draggedKey && timeDiff <= tapLength && distance < tapDistance)
                 showModal(entry.item);
             };
           }
