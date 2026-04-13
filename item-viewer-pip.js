@@ -133,6 +133,7 @@ pipBtn.onclick = async () => {
         pipBtn.textContent = "Overlay";
 
         const globalSelectionBox = document.querySelector(".global-selection-box");
+        globalSelectionBox.style.width = "";
         globalSelectionBox.classList.remove("overlay-active");
         pipContainer.classList.remove("overlay-active");
         return;

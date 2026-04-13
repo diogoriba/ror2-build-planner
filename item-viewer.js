@@ -1,11 +1,14 @@
 const content = document.getElementById('content');
 const tooltip = document.getElementById('tooltip');
+const tapLength = 250; // in milliseconds
 
 const expansionIconMap = {
   'Alloyed Collective': 'alloyedCollective',
   'Seekers of the Storm': 'seekersOfTheStorm',
   'Survivors of the Void': 'survivorsOfTheVoid'
 };
+
+const supportsHover = window.matchMedia("(hover: hover)").matches;
 
 function escapeHtml(value) {
   return String(value)
@@ -114,10 +117,22 @@ function render() {
       <img loading="lazy" src="public/img/${item.image}.webp" alt="${item.name}" onerror="this.src='public/img/${item.image}.jpg'" />
       ${badgeHtml}
     `;
-    card.addEventListener('click', () => onAdd(item));
-    card.addEventListener('pointerenter', event => showTooltip(event, item));
-    card.addEventListener('pointermove', event => moveTooltip(event));
-    card.addEventListener('pointerleave', hideTooltip);
+
+    if (supportsHover) {
+      card.onclick = () => onAdd(item);
+      card.onpointerenter = event => showTooltip(event, item);
+      card.onpointermove = event => moveTooltip(event);
+      card.onpointerleave = hideTooltip;
+    } else {
+      card.ontouchstart = () => {
+        card.touchStartTime = Date.now();
+      }
+      card.ontouchend = () => { 
+        const timeDiff = Date.now() - card.touchStartTime;
+        if (!draggedKey && timeDiff <= tapLength)
+          showModal(item);
+      };
+    }
     return card;
   }
 
@@ -265,35 +280,85 @@ function render() {
     tile.dataset.selectionKey = key;
     tile.dataset.sectionIndex = String(sectionStates.indexOf(sectionState));
 
-    tile.addEventListener('dragstart', event => {
-      draggedKey = key;
-      draggedSection = sectionState;
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/plain', key);
-      tile.classList.add('dragging');
-    });
+    if (supportsHover) {
+      tile.onpointerdown = event => {
+        if (event.button !== 0) return; // Only left mouse button
+        draggedKey = key;
+        draggedSection = sectionState;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', key);
+      };
 
-    tile.addEventListener('dragend', () => {
-      tile.classList.remove('dragging');
-      draggedKey = null;
-      draggedSection = null;
-    });
+      tile.ondragstart = event => {
+        draggedKey = key;
+        draggedSection = sectionState;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', key);
+        tile.classList.add('dragging');
+      };
 
-    tile.addEventListener('dragover', event => {
-      if (draggedKey) {
+      tile.ondragend = () => {
+        tile.classList.remove('dragging');
+        draggedKey = null;
+        draggedSection = null;
+      };
+
+      tile.ondragover = event => {
+        if (draggedKey) {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = 'move';
+        }
+      };
+
+      tile.ondrop = event => {
         event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-      }
-    });
-
-    tile.addEventListener('drop', event => {
-      event.preventDefault();
-      if (!draggedKey || draggedSection !== sectionState) return;
-      const targetKey = key;
-      if (targetKey === draggedKey) return;
-      moveGlobalEntry(draggedKey, targetKey);
-      refreshAllSelections();
-    });
+        if (!draggedKey || draggedSection !== sectionState) return;
+        const targetKey = key;
+        if (targetKey === draggedKey) return;
+        moveGlobalEntry(draggedKey, targetKey);
+        refreshAllSelections();
+      };
+    } else {
+      // On touch devices, use long press to initiate drag
+      tile.longPressTimeout = null;
+      const previousOnTouchStart = tile.ontouchstart;
+      tile.ontouchstart = event => {
+        tile.longPressTimeout = setTimeout(() => {
+          draggedKey = key;
+          draggedSection = sectionState;
+          document.body.style.overflow = 'hidden'; // Prevent scrolling while dragging
+        }, tapLength);
+        if (previousOnTouchStart) {
+          previousOnTouchStart(event);
+        }
+      };
+      const previousOnTouchEnd = tile.ontouchend;
+      tile.ontouchend = event => {
+        clearTimeout(tile.longPressTimeout);
+        document.body.style.overflow = '';
+        if (draggedKey !== null) {
+          draggedKey = null;
+          draggedSection = null;
+        } else if (previousOnTouchEnd){
+          previousOnTouchEnd(event);
+        }
+      };
+      tile.ontouchmove = event => { 
+        if (draggedKey) { 
+          event.preventDefault();
+          const touch = event.touches[0];
+          const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (targetElement) {
+            const targetKey = targetElement.dataset.selectionKey;
+            const targetSection = itemKeyToSectionState.get(targetKey);
+            if (targetKey && targetKey !== draggedKey && targetSection === sectionState) {
+              moveGlobalEntry(draggedKey, targetKey);
+              refreshAllSelections();
+            }
+          }
+        }
+      };
+    }
   }
 
   function refreshGlobalSelection() {
@@ -310,19 +375,31 @@ function render() {
         <img src="public/img/${current.item.image}.webp" alt="${current.item.name}" onerror="this.src='public/img/${current.item.image}.jpg'" />
         <div class="selection-count">${current.count}</div>
       `;
-      attachDragHandlers(tile, state, entry.key);
-      tile.addEventListener('click', () => {
-        current.count -= 1;
-        if (current.count <= 0) {
-          state.selectedMap.delete(entry.key);
-          removeGlobalEntry(entry.key);
+      
+      if (supportsHover) {
+        tile.onclick = () => {
+          current.count -= 1;
+          if (current.count <= 0) {
+            state.selectedMap.delete(entry.key);
+            removeGlobalEntry(entry.key);
+          }
+          state.refreshSelection();
+          refreshGlobalSelection();
+        };
+        tile.onpointerenter = event => showTooltip(event, current.item);
+        tile.onpointermove = event => moveTooltip(event);
+        tile.onpointerleave = hideTooltip;
+      } else {
+        tile.ontouchstart = () => {
+          tile.touchStartTime = Date.now();
         }
-        state.refreshSelection();
-        refreshGlobalSelection();
-      });
-      tile.addEventListener('pointerenter', event => showTooltip(event, current.item));
-      tile.addEventListener('pointermove', event => moveTooltip(event));
-      tile.addEventListener('pointerleave', hideTooltip);
+        tile.ontouchend = () => { 
+          const timeDiff = Date.now() - tile.touchStartTime;
+          if (!draggedKey && timeDiff < tapLength)
+            showModal(current.item);
+        };
+      }
+      attachDragHandlers(tile, state, entry.key);
       globalSelectionItems.appendChild(tile);
     });
     globalSelectionEmpty.style.display = hasAny ? 'none' : 'block';
@@ -339,9 +416,65 @@ function render() {
     refreshGlobalSelection();
   }
 
-  const fixedHeader = document.createElement('div');
-  fixedHeader.className = 'fixed-header';
-  content.parentNode.insertBefore(fixedHeader, content);
+  function showModal(item) {
+    const modal = document.getElementById('modal');
+    const modalTitle = modal.querySelector('.modal-title');
+    const modalIcon = modal.querySelector('.modal-icon');
+    const modalDescription = modal.querySelector('.modal-description');
+    const modalRecipe = modal.querySelector('.modal-recipe');
+    const modalCloseButton = modal.querySelector('.modal-close-button');
+    const modalDeletetionButton = modal.querySelector('.modal-deletion-button');
+    const modalMinusButton = modal.querySelector('.modal-minus-button');
+    const modalPlusButton = modal.querySelector('.modal-plus-button');
+    const modalCountDisplay = modal.querySelector('.modal-quantity-input');
+    globalSelectionBox.classList.add('modal-open');
+
+    const key = getSelectionKey(item);
+    const sectionState = itemKeyToSectionState.get(key);
+    const selectedMap = sectionState.selectedMap;
+    
+    modal.classList.add('visible');
+    modalTitle.textContent = item.name;
+    modalIcon.src = `public/img/${item.image}.webp`;
+    modalDescription.innerHTML = formatDescription(item.description);
+    modalRecipe.innerHTML = item.recipe ? `<div class="recipe-title">Crafted with</div>${renderRecipeIcons(item.recipe)}` : '';
+    function updateCountDisplay() {
+      modalCountDisplay.value = selectedMap.get(key)?.count || 0;
+    }
+    function changeValue(newValue) {
+      const currentValue = selectedMap.get(key)?.count || 0;
+      selectedMap.set(key, { item, count: newValue } );
+      if (newValue <= 0) {
+        selectedMap.delete(key);
+      }
+      if (currentValue == 0 && newValue > 0) {
+        insertGlobalEntry(sectionState, key);
+      }
+      if (currentValue > 0 && newValue <= 0) {
+        removeGlobalEntry(key);
+      }
+      updateCountDisplay();
+      refreshAllSelections();
+    }
+    function increment() {
+      const currentValue = selectedMap.get(key)?.count || 0;
+      changeValue(currentValue + 1);
+    }
+    function decrement() {
+      const currentValue = selectedMap.get(key)?.count || 0;
+      changeValue(currentValue - 1);
+    }
+    function updateFromCountInput() {
+      changeValue(modalCountDisplay.valueAsNumber || 0);
+    }
+    modalCloseButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); refreshGlobalSelection(); };
+    modalDeletetionButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); changeValue(0); };
+    modalMinusButton.ontouchstart = (e) => { e.preventDefault(); decrement(); };
+    modalPlusButton.ontouchstart = (e) => { e.preventDefault(); increment(); };
+    modalCountDisplay.onchange = (e) => { e.preventDefault(); updateFromCountInput(); };
+    updateCountDisplay();
+  }
+
   const globalSelectionBox = document.createElement('div');
   globalSelectionBox.className = 'global-selection-box';
   globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div><div class="selection-empty">Click items to add them here</div>';
@@ -349,7 +482,6 @@ function render() {
   const globalSelectionEmpty = globalSelectionBox.querySelector('.selection-empty');
   globalSelectionItems.classList.add('hidden');
   globalSelectionEmpty.style.display = 'block';
-  fixedHeader.appendChild(globalSelectionBox);
 
   // Create search section
   const searchSection = document.createElement('div');
@@ -392,7 +524,9 @@ function render() {
       }).join('')}
     </div>
   `;
-  fixedHeader.appendChild(searchSection);
+
+  content.parentNode.insertBefore(searchSection, content);
+  content.parentNode.insertBefore(globalSelectionBox, content);
 
   // Get search elements
   const searchInput = searchSection.querySelector('.search-input');
@@ -634,21 +768,33 @@ function render() {
             <img src="public/img/${entry.item.image}.webp" alt="${entry.item.name}" onerror="this.src='public/img/${entry.item.image}.jpg'" />
             <div class="selection-count">${entry.count}</div>
           `;
-          attachDragHandlers(tile, sectionState, selectionKey);
-          tile.addEventListener('click', () => {
-            const current = selectedMap.get(selectionKey);
-            if (!current) return;
-            current.count -= 1;
-            if (current.count <= 0) {
-              selectedMap.delete(selectionKey);
-              removeGlobalEntry(selectionKey);
+
+          if (supportsHover) {
+            tile.onclick = () => {
+              const current = selectedMap.get(selectionKey);
+              if (!current) return;
+              current.count -= 1;
+              if (current.count <= 0) {
+                selectedMap.delete(selectionKey);
+                removeGlobalEntry(selectionKey);
+              }
+              refreshSelection();
+              refreshGlobalSelection();
+            };
+            tile.onpointerenter = event => showTooltip(event, entry.item);
+            tile.onpointermove = event => moveTooltip(event);
+            tile.onpointerleave = hideTooltip;
+          } else {
+            tile.ontouchstart = () => {
+              tile.touchStartTime = Date.now();
             }
-            refreshSelection();
-            refreshGlobalSelection();
-          });
-          tile.addEventListener('pointerenter', event => showTooltip(event, entry.item));
-          tile.addEventListener('pointermove', event => moveTooltip(event));
-          tile.addEventListener('pointerleave', hideTooltip);
+            tile.ontouchend = () => { 
+              const timeDiff = Date.now() - tile.touchStartTime;
+              if (!draggedKey && timeDiff < tapLength)
+                showModal(entry.item);
+            };
+          }
+          attachDragHandlers(tile, sectionState, selectionKey);
           selectionItems.appendChild(tile);
         });
       }

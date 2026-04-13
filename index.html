@@ -15,17 +15,40 @@
     <header>
       <div>
         <h1>RoR2 Build Planner</h1>
-        <span>
-          Click items below to add them to your build.<br/>
-          Click items inside the selection boxes to remove them.</br>
-          You can drag items to reorder them in each rarity category.<br/>
+        <span class="desktop-only">
+          Click items to add them to your build.<br/>
+          Click items in the selection boxes to remove them.</br>
+          Drag items to reorder them in each rarity category.<br/>
           Use the filters to find the items you need.<br/>
           Overlay function on the bottom right corner allows you to see your build in-game.
+        </span>
+        <span class="mobile-only">
+          Tap items below to add or remove them from your build.<br/>
+          Hold and drag items to reorder them in each rarity category.<br/>
+          Use the filters to find the items you need.
         </span>
       </div>
     </header>
     <div id="content"></div>
-  </div>
+    <div id="modal">
+      <div class="modal-content">
+        <button class="modal-close-button" aria-label="Close">&times;</button>
+        <div class="modal-header">
+          <img class="modal-icon" src="" alt="" />
+          <h2 class="modal-title"></h2>
+        </div>
+        <div class="modal-body">
+          <p class="modal-description"></p>
+          <div class="modal-recipe"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-deletion-button">Delete</button>
+          <button class="modal-minus-button">-</button>
+          <input type="number" class="modal-quantity-input" value="1" min="1" />
+          <button class="modal-plus-button">+</button>
+        </div>
+      </div>
+    </div>
 
   <div id="tooltip" class="tooltip" aria-hidden="true"></div>
   <footer>
