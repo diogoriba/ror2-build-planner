@@ -114,7 +114,7 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 .dim { filter: brightness(33%); }
 #modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; align-items: end; justify-content: center; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 11; }
 #modal.visible { opacity: 1; pointer-events: auto; }
-#modal .modal-content { position: relative; max-width: 90vw; max-height: 80vh; margin-bottom: 1em; overflow: auto; background: var(--surface); border-radius: 18px; padding: 24px; box-shadow: var(--shadow); z-index: 101; }
+#modal .modal-content { position: relative; max-width: 90vw; max-height: 80vh; margin-bottom: 3.5em; overflow: auto; background: var(--surface); border-radius: 18px; padding: 24px; box-shadow: var(--shadow); z-index: 101; }
 #modal .modal-footer { margin-bottom: 2em; }
 #modal .modal-close-button { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border: none; border-radius: 50%; background: rgba(255,255,255,.1); color: var(--text); font-size: 1.2rem; cursor: pointer; align-items: center; justify-content: center; }
 #modal .modal-minus-button { display: inline-block; width: 32px; height: 32px; border: none; border-radius: 8px; background: rgba(255,255,255,.1); color: var(--text); font-size: 1.2rem; cursor: pointer; align-items: center; justify-content: center; }
