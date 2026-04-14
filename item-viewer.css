@@ -18,14 +18,14 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #15223d 0%, #090b14 55%); color: var(--text); }
-header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 32px; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 1em; }
 h1 { font-size: clamp(2.4rem, 2.2vw, 3.4rem); margin:0; letter-spacing: -0.04em; }
 p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 
 #content { margin-top: 2em; display: flex; flex-wrap: wrap; gap: 2em; justify-content: center; align-items: stretch; padding-bottom: 8px; }
 #pipBtn { position: relative; top:0px; right: 0px; }
 .section { margin-bottom: 0; display: flex; flex-direction: column; }
-.global-selection-box { max-height: calc(50% - (var(--mobile-bottom-offset) / 2.0)); overflow-y: auto; position: sticky; top: 0; z-index: 50; width: 100%; padding: 16px; background: var(--bg); border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; flex: 0 0 auto; min-width: 250px; max-width: 100%; }
+.global-selection-box { margin: 0em 1em 0em 1em; max-height: calc(50% - (var(--mobile-bottom-offset) / 2.0)); overflow-y: auto; position: sticky; top: 0; z-index: 50; width: 100%; padding: 16px; background: var(--bg); border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; flex: 0 0 auto; min-width: 250px; max-width: calc(100% - 2em); }
 .global-selection-box.overlay-active { border-color: #ff0000ff; }
 .global-selection-box .overlay-description { display: none; }
 .global-selection-box.overlay-active .overlay-description { display: block; color: var(--text); font-size: 0.75rem; margin-top: 8px; }
@@ -53,14 +53,14 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 .item-card-badge { position: absolute; left: 0px; top: 0px; width: 18px; height: 18px; padding: 2px; border-radius: 6px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.16); display: grid; place-items: center; }
 .item-card-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-.search-section { padding: 16px; background: var(--bg); border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; flex: 1 1 33%; min-width: 250px; }
+.search-section { margin: 0em 1em 0em 1em; padding: 16px; background: var(--bg); border: 1px dashed rgba(255,255,255,.14); border-radius: 16px; flex: 1 1 33%; min-width: 250px; }
 .search-controls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 .search-input { flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: var(--text); font-size: 1rem; }
 .search-input:focus { outline: none; border-color: var(--accent); }
 .clear-selection-button { padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: var(--text); font-size: 0.9rem; cursor: pointer; }
 .clear-selection-button:hover { border-color: var(--accent); background: rgba(255,255,255,.08); }
 .tag-filter { display: flex; flex-direction: column; gap: 4px; }
-.expansion-filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px; }
+.expansion-filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-top: 16px; }
 .expansion-label { color: var(--muted); font-size: 0.9rem; }
 .expansion-option { display: inline-flex; align-items: center; gap: 6px; color: var(--text); font-size: 0.9rem; cursor: pointer; }
 .expansion-option input { width: 16px; height: 16px; accent-color: var(--accent); }
@@ -145,7 +145,10 @@ footer { font-size: 0.75em; text-align: center; margin: 3em; color: #ccc;}
       --mobile-bottom-offset: 3.5em;
     }
     .page { margin: 0; }
-    header { margin: 1em; }
+    .selection-box { display: none; }
+    .expansion-filters { flex-direction: column; }
+    .global-selection-box { margin: 0; max-width: 100%; }
+    .search-section { margin: 0; }
 }
 @media (hover) {
   .desktop-only { display: block; }

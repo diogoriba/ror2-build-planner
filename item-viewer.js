@@ -146,7 +146,7 @@ function render() {
 
   function showTooltip(event, item) {
     // Don't show tooltip if we're currently dragging
-    // if (draggedKey) return;
+    if (draggedKey) return;
     
     const recipeHtml = item.recipe ? `
       <div class="recipe-title">Crafted with</div>
