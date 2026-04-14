@@ -324,46 +324,6 @@ function render() {
         moveGlobalEntry(draggedKey, targetKey);
         refreshAllSelections();
       };
-    } else {
-      // On touch devices, use long press to initiate drag
-      tile.longPressTimeout = null;
-      const previousOnTouchStart = tile.ontouchstart;
-      tile.ontouchstart = event => {
-        tile.longPressTimeout = setTimeout(() => {
-          draggedKey = key;
-          draggedSection = sectionState;
-          document.body.style.overflow = 'hidden'; // Prevent scrolling while dragging
-        }, tapLength);
-        if (previousOnTouchStart) {
-          previousOnTouchStart(event);
-        }
-      };
-      const previousOnTouchEnd = tile.ontouchend;
-      tile.ontouchend = event => {
-        clearTimeout(tile.longPressTimeout);
-        document.body.style.overflow = '';
-        if (draggedKey !== null) {
-          draggedKey = null;
-          draggedSection = null;
-        } else if (previousOnTouchEnd){
-          previousOnTouchEnd(event);
-        }
-      };
-      tile.ontouchmove = event => { 
-        if (draggedKey) { 
-          event.preventDefault();
-          const touch = event.touches[0];
-          const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
-          if (targetElement) {
-            const targetKey = targetElement.dataset.selectionKey;
-            const targetSection = itemKeyToSectionState.get(targetKey);
-            if (targetKey && targetKey !== draggedKey && targetSection === sectionState) {
-              moveGlobalEntry(draggedKey, targetKey);
-              refreshAllSelections();
-            }
-          }
-        }
-      };
     }
   }
 
@@ -435,12 +395,16 @@ function render() {
     const modalIcon = modal.querySelector('.modal-icon');
     const modalDescription = modal.querySelector('.modal-description');
     const modalRecipe = modal.querySelector('.modal-recipe');
-    const modalCloseButton = modal.querySelector('.modal-close-button');
-    const modalDeletetionButton = modal.querySelector('.modal-deletion-button');
-    const modalMinusButton = modal.querySelector('.modal-minus-button');
-    const modalPlusButton = modal.querySelector('.modal-plus-button');
+    const modalCloseButton = modal.querySelector('#modal-close-button');
+    const modalCloseButton2 = modal.querySelector('#modal-close-button2');
+    const modalDeletetionButton = modal.querySelector('#modal-deletion-button');
+    const modalMinusButton = modal.querySelector('#modal-minus-button');
+    const modalPlusButton = modal.querySelector('#modal-plus-button');
     const modalCountDisplay = modal.querySelector('.modal-quantity-input');
+    const modalMoveLeft = modal.querySelector('#modal-move-left');
+    const modalMoveRight = modal.querySelector('#modal-move-right');
     globalSelectionBox.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
 
     const key = getSelectionKey(item);
     const sectionState = itemKeyToSectionState.get(key);
@@ -480,11 +444,31 @@ function render() {
     function updateFromCountInput() {
       changeValue(modalCountDisplay.valueAsNumber || 0);
     }
-    modalCloseButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); refreshGlobalSelection(); };
-    modalDeletetionButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); changeValue(0); };
+    function move(incr) {
+      const itemIndex = globalSelectionOrder.findIndex(entry => entry.key === key);
+      const previousIndex = itemIndex + incr;
+      if (previousIndex >= 0 && previousIndex < globalSelectionOrder.length) {
+        const previousItem = globalSelectionOrder[previousIndex];
+        if (previousItem && previousItem.sectionState.id === sectionState.id) {
+          moveGlobalEntry(key, previousItem.key);
+          refreshAllSelections();
+        }
+      }
+    }
+    function moveLeft() {
+      move(-1);
+    }
+    function moveRight() {
+      move(1);
+    }
+    modalCloseButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); document.body.style.overflow = ''; refreshGlobalSelection(); };
+    modalCloseButton2.ontouchstart = modalCloseButton.ontouchstart;
+    modalDeletetionButton.ontouchstart = (e) => { e.preventDefault(); modal.classList.remove('visible'); globalSelectionBox.classList.remove('modal-open'); document.body.style.overflow = ''; changeValue(0); };
     modalMinusButton.ontouchstart = (e) => { e.preventDefault(); decrement(); };
     modalPlusButton.ontouchstart = (e) => { e.preventDefault(); increment(); };
     modalCountDisplay.onchange = (e) => { e.preventDefault(); updateFromCountInput(); };
+    modalMoveLeft.ontouchstart = (e) => { e.preventDefault(); moveLeft(); }
+    modalMoveRight.ontouchstart = (e) => { e.preventDefault(); moveRight(); }
     updateCountDisplay();
   }
 

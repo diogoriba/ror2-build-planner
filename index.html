@@ -32,7 +32,7 @@
     <div id="content"></div>
     <div id="modal">
       <div class="modal-content">
-        <button class="modal-close-button" aria-label="Close">&times;</button>
+        <button id="modal-close-button" class="modal-close-button" aria-label="Close">&times;</button>
         <div class="modal-header">
           <img class="modal-icon" src="" alt="" />
           <h2 class="modal-title"></h2>
@@ -42,10 +42,20 @@
           <div class="modal-recipe"></div>
         </div>
         <div class="modal-footer">
-          <button class="modal-deletion-button">Delete</button>
-          <button class="modal-minus-button">-</button>
-          <input type="number" class="modal-quantity-input" value="1" min="1" />
-          <button class="modal-plus-button">+</button>
+          <div class="row">
+            <button id="modal-move-left" class="modal-small-button">◀</button>
+            <span>Move</span>
+            <button id="modal-move-right" class="modal-small-button">▶</button>
+          </div>
+          <div class="row">
+            <button id="modal-minus-button" class="modal-small-button">-</button>
+            <input type="number" class="modal-quantity-input" value="1" min="1" />
+            <button id="modal-plus-button" class="modal-small-button">+</button>  
+          </div>
+          <div class="row">
+            <button id="modal-deletion-button" class="modal-red-button">Delete</button>
+            <button id="modal-close-button2" class="modal-button">Close</button>
+          </div>
         </div>
       </div>
     </div>
