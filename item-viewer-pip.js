@@ -35,8 +35,14 @@ let rendering = false;
 // -------- MAIN LOOP --------
 async function renderLoop() {
   if (rendering) return; // prevent overlap
-  rendering = true;
 
+  if (!window.pipDirty) {
+    return;
+  }
+
+  window.pipDirty = false;
+  rendering = true;
+  console.log('rendering video frame');
   try {
     if (window.pipTarget.offsetWidth === 0 || window.pipTarget.offsetHeight === 0) {
       rendering = false;
@@ -76,6 +82,7 @@ async function renderLoop() {
 
 function initializePiP() {
     rendering = false;
+    window.pipDirty = true;
     window.pipCanvas  = document.createElement("canvas");
     window.pipContext = window.pipCanvas.getContext("2d");
 
@@ -84,6 +91,7 @@ function initializePiP() {
 
     // Create video stream
     const stream = window.pipCanvas.captureStream(2);
+    
     window.pipVideo = document.createElement("video");
     window.pipVideo.srcObject = stream;
     window.pipVideo.muted = true;
@@ -97,6 +105,9 @@ function initializePiP() {
     pipDescription.innerHTML = "If overlay is not already present, right-click the video above 🔼 and select the <b>\"Picture in Picture\"</b> option from the menu.";
     pipContainer.appendChild(pipDescription);
 
+    if (window.pipRenderLoop) {
+      clearInterval(window.pipRenderLoop);
+    }
     window.pipRenderLoop = setInterval(renderLoop, FRAME_TIME);
 }
 

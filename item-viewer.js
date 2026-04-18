@@ -98,7 +98,7 @@ function render() {
   itemsByRarity.sort((a, b) => getCategoryRank(a.rarity) - getCategoryRank(b.rarity) || a.rarity.localeCompare(b.rarity));
   const sectionStates = [];
   const globalSelectionOrder = [];
-  let draggedKey = null;
+  draggedKey = null;
   let draggedSection = null;
 
   function createItemCard(item, onAdd) {
@@ -241,6 +241,7 @@ function render() {
   }
 
   function insertGlobalEntry(sectionState, key) {
+    window.pipDirty = true;
     if (globalSelectionOrder.some(entry => entry.sectionState === sectionState && entry.key === key)) return;
     const sectionIndexes = [];
     for (let i = 0; i < globalSelectionOrder.length; i++) {
@@ -262,12 +263,14 @@ function render() {
   }
 
   function removeGlobalEntry(key) {
+    window.pipDirty = true;
     for (let i = globalSelectionOrder.length - 1; i >= 0; i--) {
       if (globalSelectionOrder[i].key === key) globalSelectionOrder.splice(i, 1);
     }
   }
 
   function moveGlobalEntry(key, targetKey) {
+    window.pipDirty = true;
     const currentIndex = globalSelectionOrder.findIndex(entry => entry.key === key);
     const targetIndex = globalSelectionOrder.findIndex(entry => entry.key === targetKey);
     if (currentIndex === -1 || targetIndex === -1 || currentIndex === targetIndex) return;
@@ -293,13 +296,11 @@ function render() {
         if (event.button !== 0) return; // Only left mouse button
         draggedKey = key;
         draggedSection = sectionState;
-        event.dataTransfer.setData('text/plain', key);
       };
 
       tile.ondragstart = event => {
         draggedKey = key;
         draggedSection = sectionState;
-        event.dataTransfer.setData('text/plain', key);
         tile.classList.add('dragging');
       };
 
@@ -323,6 +324,7 @@ function render() {
         if (targetKey === draggedKey) return;
         moveGlobalEntry(draggedKey, targetKey);
         refreshAllSelections();
+        draggedKey = null;
       };
     }
   }
@@ -351,6 +353,8 @@ function render() {
           }
           state.refreshSelection();
           refreshGlobalSelection();
+          window.pipDirty = true;
+          draggedKey = null;
         };
         tile.onpointerenter = event => showTooltip(event, current.item);
         tile.onpointermove = event => moveTooltip(event);
@@ -475,6 +479,12 @@ function render() {
   const globalSelectionBox = document.createElement('div');
   globalSelectionBox.className = 'global-selection-box';
   globalSelectionBox.innerHTML = '<h2>Selected items</h2><div class="selection-items"></div><div class="selection-empty">Click items to add them here</div>';
+  function setDirtyOnResize() {
+    window.pipDirty = true;
+  }
+  document.body.onresize = setDirtyOnResize;
+  new ResizeObserver(setDirtyOnResize).observe(globalSelectionBox);
+  
   const globalSelectionItems = globalSelectionBox.querySelector('.selection-items');
   const globalSelectionEmpty = globalSelectionBox.querySelector('.selection-empty');
   globalSelectionItems.classList.add('hidden');
