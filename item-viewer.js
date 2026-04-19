@@ -298,6 +298,12 @@ function render() {
         draggedSection = sectionState;
       };
 
+      tile.onpointerup = event => {
+        if (event.button !== 0) return;
+        draggedKey = null;
+        draggedSection = null;
+      }
+
       tile.ondragstart = event => {
         draggedKey = key;
         draggedSection = sectionState;
