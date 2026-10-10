@@ -134,7 +134,7 @@ function render() {
     const itemIcon = document.createElement('img');
     itemIcon.loading = 'lazy';
     itemIcon.alt = item.name;
-    setLocalImageSource(itemIcon, item.image);
+    setItemImageSource(itemIcon, item);
     card.appendChild(itemIcon);
 
     const badgeIcon = expansionIconMap[item.expansion];
@@ -265,10 +265,33 @@ function render() {
   const itemByKey = new Map(itemsByRarity.flatMap(group =>
     group.items.map(item => [getSelectionKey(item), item])
   ));
+  const itemCategoryByKey = new Map(itemsByRarity.flatMap(group =>
+    group.items.map(item => [getSelectionKey(item), group.rarity])
+  ));
+  const rarityBackgrounds = {
+    HALLOWED: 'BgHallowed',
+    HEX: 'BgHex',
+    PAGE: 'BgPage',
+    LUNAR: 'BgLunar',
+    EQUIPMENT: 'BgEquipment'
+  };
   const itemKeyToSectionState = new Map();
 
   function getSelectionKey(item) {
     return `${item.id}`;
+  }
+
+  function setItemImageSource(imageElement, item) {
+    setLocalImageSource(imageElement, item.image);
+
+    if (item.expansion !== 'Hallowed Concepts') return;
+    const background = rarityBackgrounds[itemCategoryByKey.get(getSelectionKey(item))];
+    if (!background) return;
+
+    imageElement.style.backgroundImage = `url("public/img/${background}.png")`;
+    imageElement.style.backgroundPosition = 'center';
+    imageElement.style.backgroundRepeat = 'no-repeat';
+    imageElement.style.backgroundSize = 'contain';
   }
 
   function insertGlobalEntry(sectionState, key) {
@@ -378,7 +401,7 @@ function render() {
       tile.className = 'selection-item';
       const itemIcon = document.createElement('img');
       itemIcon.alt = current.item.name;
-      setLocalImageSource(itemIcon, current.item.image);
+      setItemImageSource(itemIcon, current.item);
       tile.appendChild(itemIcon);
       const count = document.createElement('div');
       count.className = 'selection-count';
@@ -457,7 +480,7 @@ function render() {
     
     modal.classList.add('visible');
     modalTitle.textContent = item.name;
-    setLocalImageSource(modalIcon, item.image);
+    setItemImageSource(modalIcon, item);
     modalDescription.innerHTML = formatDescription(item.description);
     modalRecipe.innerHTML = item.recipe ? `<div class="recipe-title">Crafted with</div>${renderRecipeIcons(item.recipe)}` : '';
     function updateCountDisplay() {
@@ -831,7 +854,7 @@ function render() {
           tile.className = 'selection-item';
           const itemIcon = document.createElement('img');
           itemIcon.alt = entry.item.name;
-          setLocalImageSource(itemIcon, entry.item.image);
+          setItemImageSource(itemIcon, entry.item);
           tile.appendChild(itemIcon);
           const count = document.createElement('div');
           count.className = 'selection-count';
