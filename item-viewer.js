@@ -2,6 +2,19 @@ const content = document.getElementById('content');
 const tooltip = document.getElementById('tooltip');
 const tapLength = 250; // in milliseconds
 const tapDistance = 25; // in pixels
+const categoryOrder = [
+  'COMMON',
+  'UNCOMMON',
+  'LEGENDARY',
+  'UNIQUE',
+  'EQUIPMENT',
+  'LUNAR',
+  'VOID',
+  'MEAL',
+  'HALLOWED',
+  'HEX',
+  'PAGE'
+];
 const expansionIconMap = {
   'Alloyed Collective': 'alloyedCollective',
   'Hallowed Concepts': 'hallowedConcepts',
@@ -21,8 +34,7 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function setLocalImageSource(imageElement, imageName) {
-  const extensions = ['webp', 'jpg', 'png'];
+function setLocalImageSource(imageElement, imageName, extensions = ['webp', 'jpg', 'png']) {
   let extensionIndex = 0;
 
   function loadNextFormat() {
@@ -102,20 +114,8 @@ function getCategoryLabel(name) {
 }
 
 function getCategoryRank(name) {
-  const key = String(name).toLowerCase();
-  if (key.includes('uncommon')) return 2;
-  if (key.includes('common')) return 1;
-  if (key.includes('hex')) return 2.5;
-  if (key.includes('legendary')) return 3;
-  if (key.includes('hallowed')) return 3.5;
-  if (key.includes('unique')) return 4;
-  if (key.includes('void') || key.includes('corrupted')) return 5;
-  if (key.includes('lunar')) return 6;
-  if (key.includes('page')) return 6.5;
-  if (key.includes('equip')) return 7;
-  if (key.includes('meal')) return 8;
-
-  return 99;
+  const rank = categoryOrder.indexOf(String(name).toUpperCase());
+  return rank === -1 ? 99 : rank;
 }
 
 function render() {
@@ -282,7 +282,8 @@ function render() {
   }
 
   function setItemImageSource(imageElement, item) {
-    setLocalImageSource(imageElement, item.image);
+    const imageFormats = item.expansion === 'Hallowed Concepts' ? ['png'] : undefined;
+    setLocalImageSource(imageElement, item.image, imageFormats);
 
     if (item.expansion !== 'Hallowed Concepts') return;
     const background = rarityBackgrounds[itemCategoryByKey.get(getSelectionKey(item))];
