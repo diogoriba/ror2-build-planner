@@ -590,6 +590,17 @@ const itemsByRarity = [
         "image": "weight",
         "description": "{debuff:Reduces your stats while in combat}, but {misc:send this item to an enemy} on hit. On death, this item will be sent to it's holder's killer.\nReduces {offense:damage} by 30% {+10%), {offense:attack speed} by 30% {+10%}, {misc:movement speed} by 30% {+10%}, and {misc:armor} by 35 {+15}.",
         "expansion": "Alloyed Collective"
+      },
+      {
+        "id": 4312,
+        "name": "Totem of Sacrifice",
+        "tags": [
+          "economy",
+          "aoe"
+        ],
+        "image": "totemOfSacrifice",
+        "description": "Place an Altar of Sacrifice. Enemies killed in its zone charge it; when the altar expires, it drops an item based on its charge level.\nLunar equipment cooldown: {misc:60s}",
+        "expansion": "Hallowed Concepts"
       }
     ]
   },
@@ -859,7 +870,18 @@ const itemsByRarity = [
         "image": "fridge",
         "description": "Request an {offense:Eclipse Zero Vending Machine} from the {offense:UES Safe Travels}. Delivery guaranteed in {misc:5 seconds}, dealing {offense:2000% damage}. {defense:Heal} up to 3 targets for {defense:25% of their maximum health}.\nCooldown: {misc:60s}",
         "expansion": "Survivors of the Void"
-      }
+      },
+      {
+        "id": 4311,
+        "name": "N'kuhana's Rebirth",
+        "tags": [
+          "status",
+          "raw damage"
+        ],
+        "image": "nkuhanasRebirth",
+        "description": "Elite equipment associated with Stygian elites.",
+        "expansion": "Hallowed Concepts"
+      },
     ]
   },
   {
@@ -2241,6 +2263,364 @@ const itemsByRarity = [
           ]
         },
         "expansion": "Alloyed Collective"
+      }
+    ]
+  },
+  {
+    "rarity": "HALLOWED",
+    "items": [
+      {
+        "id": 4285,
+        "name": "Corpse Lily",
+        "tags": [
+          "status",
+          "aoe"
+        ],
+        "image": "corpseLily",
+        "description": "During Teleporter events and other holdout zones, a growing cloud applies {debuff:Blight} to enemies inside it.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4290,
+        "name": "Dream Crucible",
+        "tags": [
+          "cooldown"
+        ],
+        "image": "dreamCrucible",
+        "description": "Has a chance to take another item's cooldown when it activates, restoring that item's readiness.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4291,
+        "name": "Earthbound Vessel",
+        "tags": [
+          "movement",
+          "defensive"
+        ],
+        "image": "earthboundVessel",
+        "description": "Gain {misc:3} {+2} extra jumps. Each unused extra jump grants {defense:5 armor}.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4286,
+        "name": "Infernal Mark",
+        "tags": [
+          "on kill",
+          "economy"
+        ],
+        "image": "infernalMark",
+        "description": "Soul-branded enemies draw nearby monsters' attention and can be damaged by their allies.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4287,
+        "name": "Nightmare Demon",
+        "tags": [
+          "raw damage",
+          "aoe"
+        ],
+        "image": "nightmareDemon",
+        "description": "Skill damage charges a demon attached to an enemy. At full charge, hitting it with a skill detonates it for massive damage.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4293,
+        "name": "Ritual Helmet",
+        "tags": [
+          "raw damage",
+          "aoe"
+        ],
+        "image": "ritualHelmet",
+        "description": "While sprinting, a phantasmal skull repeatedly damages nearby enemies.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4292,
+        "name": "Sanguine Chalice",
+        "tags": [
+          "defensive",
+          "hp%"
+        ],
+        "image": "sanguineChalice",
+        "description": "Bleed and Hemorrhage damage heals you based on the number of those debuff stacks on the enemy.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4288,
+        "name": "Stained Scimitar",
+        "tags": [
+          "defensive",
+          "aoe"
+        ],
+        "image": "stainedScimitar",
+        "description": "Healing summons ghost blades that orbit you and damage nearby enemies.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4289,
+        "name": "Totem of Avarice",
+        "tags": [
+          "economy"
+        ],
+        "image": "totemOfAvarice",
+        "description": "Enemies killed while turned to gold drop bonus treasures worth additional gold.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4295,
+        "name": "Vengeful Spirit",
+        "tags": [
+          "defensive",
+          "summon"
+        ],
+        "image": "vengefulSpirit",
+        "description": "When a Protective Spirit is killed, it becomes a Dormant Spirit. While you hold one, an ally's death grants you a temporary barrier.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4294,
+        "name": "Vile Censer",
+        "tags": [
+          "status",
+          "aoe",
+          "raw damage"
+        ],
+        "image": "vileCenser",
+        "description": "Using a skill on a stunned enemy releases tendrils that damage it and chain to nearby enemies.",
+        "expansion": "Hallowed Concepts"
+      }
+    ]
+  },
+  {
+    "rarity": "HEX",
+    "items": [
+      {
+        "id": 4296,
+        "name": "Hex of Acceleration",
+        "tags": [
+          "movement"
+        ],
+        "image": "hexOfAcceleration",
+        "description": "Reduces your acceleration and makes the ground slippery.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4304,
+        "name": "Hex of Blindness",
+        "tags": [
+          "status"
+        ],
+        "image": "hexOfBlindness",
+        "description": "Limits your vision distance to {misc:100m}, halved by each stack.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4310,
+        "name": "Hex of Famine",
+        "tags": [
+          "defensive"
+        ],
+        "image": "hexOfFamine",
+        "description": "Reduces all healing you receive, including regeneration.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4300,
+        "name": "Hex of Greed",
+        "tags": [
+          "economy"
+        ],
+        "image": "hexOfGreed",
+        "description": "Periodically gives copies of random items from your inventory to nearby enemies.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4309,
+        "name": "Hex of Haunting",
+        "tags": [
+          "aoe",
+          "raw damage"
+        ],
+        "image": "hexOfHaunting",
+        "description": "A Poltergeist throws an object at you when it dies, dealing damage in an area.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4301,
+        "name": "Hex of Leaping",
+        "tags": [
+          "movement"
+        ],
+        "image": "hexOfLeaping",
+        "description": "Reduces your jump power, making it harder to land safely from falls.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4297,
+        "name": "Hex of Loss",
+        "tags": [
+          "economy"
+        ],
+        "image": "hexOfLoss",
+        "description": "Periodically disables a portion of your item types.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4306,
+        "name": "Hex of Mimicry",
+        "tags": [
+          "status",
+          "aoe"
+        ],
+        "image": "hexOfMimicry",
+        "description": "Causes a Mimic disguised as a chest to appear behind you.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4302,
+        "name": "Hex of Misfortune",
+        "tags": [
+          "proc"
+        ],
+        "image": "hexOfMisfortune",
+        "description": "Failed Shrine of Chance attempts trigger a negative effect.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4299,
+        "name": "Hex of Ossification",
+        "tags": [
+          "defensive"
+        ],
+        "image": "hexOfOssification",
+        "description": "Killing an enemy grants nearby enemies barrier based on its maximum health.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4298,
+        "name": "Hex of Pain",
+        "tags": [
+          "defensive",
+          "hp%"
+        ],
+        "image": "hexOfPain",
+        "description": "Reduces your maximum health and shield.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4305,
+        "name": "Hex of Patience",
+        "tags": [
+          "defensive"
+        ],
+        "image": "hexOfPatience",
+        "description": "During Teleporter events, your team takes damage while outside the Teleporter radius.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4303,
+        "name": "Hex of Rain",
+        "tags": [
+          "status"
+        ],
+        "image": "hexOfRain",
+        "description": "Increases the rate at which difficulty rises over time.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4308,
+        "name": "Hex of Strife",
+        "tags": [
+          "raw damage"
+        ],
+        "image": "hexOfStrife",
+        "description": "Adds a Shrine of the Mountain activation to Teleporter boss encounters, without its extra item reward.",
+        "expansion": "Hallowed Concepts"
+      }
+    ]
+  },
+  {
+    "rarity": "PAGE",
+    "items": [
+      {
+        "id": 4314,
+        "name": "Clarity",
+        "tags": [
+          "cooldown"
+        ],
+        "image": "clarity",
+        "description": "Refreshes skills and equipment, then reduces their cooldowns by {misc:75%} for {misc:10s}.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4316,
+        "name": "Dark Alchemy",
+        "tags": [
+          "economy"
+        ],
+        "image": "darkAlchemy",
+        "description": "Turns the targeted pickup into two items of the next lower tier.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4315,
+        "name": "Fanatic Summons",
+        "tags": [
+          "summon"
+        ],
+        "image": "fanaticSummons",
+        "description": "Summons {misc:10 Lynx Pups} to fight for you.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4317,
+        "name": "Purify",
+        "tags": [
+          "raw damage"
+        ],
+        "image": "purify",
+        "description": "Releases a wave that permanently reduces the maximum health of enemies it hits.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4318,
+        "name": "Reincarnation",
+        "tags": [
+          "aoe"
+        ],
+        "image": "reincarnation",
+        "description": "After a short delay, kills characters caught in a ritual circle. In certain sacrifice zones, it can transport the team.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4319,
+        "name": "Shadow Cloak",
+        "tags": [
+          "defensive",
+          "movement"
+        ],
+        "image": "shadowCloak",
+        "description": "Grants your team invisibility, {misc:40% movement speed} and {defense:100 armor} for {misc:30s}.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4320,
+        "name": "Shredded Page",
+        "tags": [],
+        "image": "shreddedPage",
+        "description": "Does nothing.",
+        "expansion": "Hallowed Concepts"
+      },
+      {
+        "id": 4321,
+        "name": "Warp Gate",
+        "tags": [
+          "movement",
+          "aoe"
+        ],
+        "image": "warpGate",
+        "description": "Creates a gate that lets you teleport to a destination up to {misc:1500m} away, creating an explosion on arrival.",
+        "expansion": "Hallowed Concepts"
       }
     ]
   }

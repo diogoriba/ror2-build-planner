@@ -4,6 +4,7 @@ const tapLength = 250; // in milliseconds
 const tapDistance = 25; // in pixels
 const expansionIconMap = {
   'Alloyed Collective': 'alloyedCollective',
+  'Hallowed Concepts': 'hallowedConcepts',
   'Seekers of the Storm': 'seekersOfTheStorm',
   'Survivors of the Void': 'survivorsOfTheVoid'
 };
@@ -18,6 +19,23 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function setLocalImageSource(imageElement, imageName) {
+  const extensions = ['webp', 'jpg', 'png'];
+  let extensionIndex = 0;
+
+  function loadNextFormat() {
+    if (extensionIndex >= extensions.length) {
+      imageElement.onerror = null;
+      return;
+    }
+    imageElement.src = `public/img/${imageName}.${extensions[extensionIndex]}`;
+    extensionIndex += 1;
+  }
+
+  imageElement.onerror = loadNextFormat;
+  loadNextFormat();
 }
 
 function renderToken(token) {
@@ -72,6 +90,9 @@ function getCategoryLabel(name) {
   if (key.includes('uncommon')) return 'Uncommon';
   if (key.includes('common')) return 'Common';
   if (key.includes('legendary')) return 'Legendary';
+  if (key.includes('hallowed')) return 'Hallowed';
+  if (key.includes('hex')) return 'Hex';
+  if (key.includes('page')) return "N'tormat Pages";
   if (key.includes('unique')) return 'Unique';
   if (key.includes('void') || key.includes('corrupted')) return 'Void';
   if (key.includes('meal')) return 'Meal';
@@ -84,10 +105,13 @@ function getCategoryRank(name) {
   const key = String(name).toLowerCase();
   if (key.includes('uncommon')) return 2;
   if (key.includes('common')) return 1;
+  if (key.includes('hex')) return 2.5;
   if (key.includes('legendary')) return 3;
+  if (key.includes('hallowed')) return 3.5;
   if (key.includes('unique')) return 4;
   if (key.includes('void') || key.includes('corrupted')) return 5;
   if (key.includes('lunar')) return 6;
+  if (key.includes('page')) return 6.5;
   if (key.includes('equip')) return 7;
   if (key.includes('meal')) return 8;
 
@@ -107,17 +131,24 @@ function render() {
     card.className = 'item-card';
     card.dataset.itemKey = getSelectionKey(item);
     card.dataset.expansion = item.expansion || '';
-    const badgeIcon = expansionIconMap[item.expansion];
-    const badgeHtml = badgeIcon ? `
-      <span class="item-card-badge" title="${escapeHtml(item.expansion)}">
-        <img loading="lazy" src="public/img/${badgeIcon}.webp" alt="${escapeHtml(item.expansion)}" onerror="this.src='public/img/${badgeIcon}.jpg'" />
-      </span>
-    ` : '';
+    const itemIcon = document.createElement('img');
+    itemIcon.loading = 'lazy';
+    itemIcon.alt = item.name;
+    setLocalImageSource(itemIcon, item.image);
+    card.appendChild(itemIcon);
 
-    card.innerHTML = `
-      <img loading="lazy" src="public/img/${item.image}.webp" alt="${item.name}" onerror="this.src='public/img/${item.image}.jpg'" />
-      ${badgeHtml}
-    `;
+    const badgeIcon = expansionIconMap[item.expansion];
+    if (badgeIcon) {
+      const badge = document.createElement('span');
+      badge.className = 'item-card-badge';
+      badge.title = item.expansion;
+      const badgeImage = document.createElement('img');
+      badgeImage.loading = 'lazy';
+      badgeImage.alt = item.expansion;
+      setLocalImageSource(badgeImage, badgeIcon);
+      badge.appendChild(badgeImage);
+      card.appendChild(badge);
+    }
 
     if (window.supportsHover) {
       card.onclick = () => onAdd(item);
@@ -223,8 +254,8 @@ function render() {
   )
     .filter(expansion => expansion);
 
-  // Custom sort order: Survivors of the Void, Seekers of the Storm, Alloyed Collective
-  const expansionOrder = ['Survivors of the Void', 'Seekers of the Storm', 'Alloyed Collective'];
+  // Custom sort order for expansion filters
+  const expansionOrder = ['Survivors of the Void', 'Seekers of the Storm', 'Alloyed Collective', 'Hallowed Concepts'];
   availableExpansions.sort((a, b) => {
     const indexA = expansionOrder.indexOf(a);
     const indexB = expansionOrder.indexOf(b);
@@ -345,10 +376,14 @@ function render() {
       hasAny = true;
       const tile = document.createElement('div');
       tile.className = 'selection-item';
-      tile.innerHTML = `
-        <img src="public/img/${current.item.image}.webp" alt="${current.item.name}" onerror="this.src='public/img/${current.item.image}.jpg'" />
-        <div class="selection-count">${current.count}</div>
-      `;
+      const itemIcon = document.createElement('img');
+      itemIcon.alt = current.item.name;
+      setLocalImageSource(itemIcon, current.item.image);
+      tile.appendChild(itemIcon);
+      const count = document.createElement('div');
+      count.className = 'selection-count';
+      count.textContent = current.count;
+      tile.appendChild(count);
       
       if (window.supportsHover) {
         tile.onclick = () => {
@@ -422,7 +457,7 @@ function render() {
     
     modal.classList.add('visible');
     modalTitle.textContent = item.name;
-    modalIcon.src = `public/img/${item.image}.webp`;
+    setLocalImageSource(modalIcon, item.image);
     modalDescription.innerHTML = formatDescription(item.description);
     modalRecipe.innerHTML = item.recipe ? `<div class="recipe-title">Crafted with</div>${renderRecipeIcons(item.recipe)}` : '';
     function updateCountDisplay() {
@@ -529,7 +564,7 @@ function render() {
         <label class="expansion-option">
           <input type="checkbox" value="${escapeHtml(expansion)}" checked />
           <span>
-            ${icon ? `<img src="public/img/${icon}.webp" alt="${escapeHtml(expansion)}" onerror="this.src='public/img/${icon}.jpg'" />` : ''}
+            ${icon ? `<img data-image="${escapeHtml(icon)}" alt="${escapeHtml(expansion)}" />` : ''}
             ${escapeHtml(expansion)}
           </span>
         </label>
@@ -540,6 +575,9 @@ function render() {
 
   content.parentNode.insertBefore(searchSection, content);
   content.parentNode.insertBefore(globalSelectionBox, content);
+  searchSection.querySelectorAll('.expansion-option img').forEach(image => {
+    setLocalImageSource(image, image.dataset.image);
+  });
 
   // Get search elements
   const searchInput = searchSection.querySelector('.search-input');
@@ -741,12 +779,26 @@ function render() {
 
     const header = document.createElement('div');
     header.className = 'section-header';
-    header.innerHTML = `<h2>${getCategoryLabel(group.rarity)}</h2>`;
+    const categoryLabel = getCategoryLabel(group.rarity);
+    const sectionBodyId = `section-body-${sectionStates.length}`;
+    header.innerHTML = `
+      <h2>${categoryLabel}</h2>
+      <button type="button" class="section-toggle" aria-expanded="true" aria-controls="${sectionBodyId}" aria-label="Collapse ${categoryLabel}">▾</button>
+    `;
     section.appendChild(header);
 
     const sectionBody = document.createElement('div');
     sectionBody.className = 'section-body';
+    sectionBody.id = sectionBodyId;
     sectionBody.innerHTML = '<div class="grid"></div>';
+    const sectionToggle = header.querySelector('.section-toggle');
+    sectionToggle.addEventListener('click', () => {
+      const isExpanded = sectionToggle.getAttribute('aria-expanded') === 'true';
+      sectionToggle.setAttribute('aria-expanded', String(!isExpanded));
+      sectionToggle.setAttribute('aria-label', `${isExpanded ? 'Expand' : 'Collapse'} ${categoryLabel}`);
+      sectionToggle.textContent = isExpanded ? '▸' : '▾';
+      sectionBody.hidden = isExpanded;
+    });
     const grid = sectionBody.querySelector('.grid');
 
     const selectedMap = new Map();
@@ -777,10 +829,14 @@ function render() {
           if (!entry) return;
           const tile = document.createElement('div');
           tile.className = 'selection-item';
-          tile.innerHTML = `
-            <img src="public/img/${entry.item.image}.webp" alt="${entry.item.name}" onerror="this.src='public/img/${entry.item.image}.jpg'" />
-            <div class="selection-count">${entry.count}</div>
-          `;
+          const itemIcon = document.createElement('img');
+          itemIcon.alt = entry.item.name;
+          setLocalImageSource(itemIcon, entry.item.image);
+          tile.appendChild(itemIcon);
+          const count = document.createElement('div');
+          count.className = 'selection-count';
+          count.textContent = entry.count;
+          tile.appendChild(count);
 
           if (window.supportsHover) {
             tile.onclick = () => {

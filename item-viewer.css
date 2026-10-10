@@ -45,7 +45,10 @@ p.lead { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.7; }
 .section h2 { margin: 0 0 18px; font-size: 1.2rem; letter-spacing: .02em; color: var(--accent); }
 .section-header { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: 14px; }
 .section-header h2 { margin: 0; font-size: 1rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.section-toggle { border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 2px 8px; background: rgba(255,255,255,.05); color: var(--text); font-size: 1rem; cursor: pointer; }
+.section-toggle:hover { border-color: var(--accent); }
 .section-body { display: block; }
+.section-body[hidden] { display: none; }
 .grid { display: grid; margin-bottom: 1em; gap: 10px; grid-template-columns: repeat(5, minmax(var(--min-selection-item-size), var(--max-selection-item-size))); justify-content: center; }
 .item-card { position: relative; border: none; border-radius: 0; padding: 0; background: transparent; transition: transform .18s ease; cursor: pointer; }
 .item-card:hover { transform: translateY(-3px); }
